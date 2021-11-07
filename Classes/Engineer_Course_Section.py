@@ -29,5 +29,5 @@ class Engineer_Course_Section:
         return self.quiz_id
 
     def updateSectionStatus(self):
-        if self.section_status == "Unavailable":
-            self.section_status = "Available"
+        if self.section_status == "unavailable":
+            self.section_status = "incomplete"

@@ -112,10 +112,6 @@ class CourseController:
         self.db.execute(sql, val)
         return
     
-cc = CourseController()
-x = cc.getCourse('ES102')
-print(x.name())
-
 
 
 

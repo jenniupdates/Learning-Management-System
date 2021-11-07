@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, send_file
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 import requests
 from datetime import datetime
 from flask_cors import CORS

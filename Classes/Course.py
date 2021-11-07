@@ -18,9 +18,7 @@ class Course:
     # edit functions
     def edit_name(self, newname):
         self.__name = newname
-        return (self.__name)
     
     def edit_outline(self, newoutline):
         self.__outline = newoutline
-        return (self.__outline)
     

@@ -1,18 +1,18 @@
 class Question:
-    def __init__(self, quiz_id, question_id, question_name, solution):
+    def __init__(self, quiz_id, question_id, question_name, correct_ans):
         self.quiz_id = quiz_id
         self.question_id = question_id
         self.question_name = question_name
-        self.solution = solution
+        self.correct_ans = correct_ans
 
     def getQuestionName(self):
         return self.question_name
     
-    def getQuestionSolution(self):
-        return self.solution
+    def getCorrectAnswer(self):
+        return self.correct_ans
 
     def editQuestionName(self, new_question_name):
         self.question_name = new_question_name
 
-    def editQuestionSolution(self, new_solution):
-        self.solution = new_solution
+    def editCorrectAnswer(self, correct_ans):
+        self.correct_ans = correct_ans

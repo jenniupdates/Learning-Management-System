@@ -1,8 +1,8 @@
 
 class Person:
-  def __init__(self, Name, UserName,UserType,Password):
+  def __init__(self, Name, UserID,UserType,Password):
     self.Name = Name
-    self.UserName = UserName
+    self.UserID = UserID
     self.UserType = UserType # 1 - Engineer, 2 - Trainer, 3 - HR
     self.Password = Password
   
@@ -16,8 +16,8 @@ class Person:
      if self.UserType == 3:
        return "HR"
 
-  def getUserName(self):
-     return self.UserName
+  def getUserID(self):
+     return self.UserID
 
   def getName(self):
      return self.Name

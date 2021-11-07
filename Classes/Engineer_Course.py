@@ -23,8 +23,8 @@ class Engineer_Course:
         return self.course_status
 
     def setCourseStatus(self):
-        if self.course_status == "Enrolled":
-            self.course_status = "Completed"
+        if self.course_status == "enrolled":
+            self.course_status = "completed"
     
     def getScore(self):
         return self.score

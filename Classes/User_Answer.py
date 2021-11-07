@@ -1,6 +1,6 @@
 from Database import DBHelper
 
-class Quiz_User:
+class User_Answer:
     def __init__(self,qid,uid,question_id,user_answer):
         self.quiz_id = qid
         self.user_id = uid
