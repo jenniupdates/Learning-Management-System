@@ -1,6 +1,6 @@
 import unittest
 
-from People import Person
+from Person import Person
 
 class Testperson(unittest.TestCase):
     def test_userType(self):

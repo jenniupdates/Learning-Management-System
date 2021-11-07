@@ -19,3 +19,6 @@ def index():
     
 if  __name__ =="__main__":
     app.run(debug=True)
+
+
+# Display enrolled courses of that user's

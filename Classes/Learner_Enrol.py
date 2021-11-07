@@ -6,6 +6,9 @@ from Engineer_Course_Controller import Engineer_Course_Controller
 
 app = Flask(__name__)
 
+# Get all enrolment name
+
+
 headings =("Course ID","Class ID", "Course Capacity","Class Size","Course Eligibility","Eligibilty")
 db = DBHelper()
 course_controller = Engineer_Course_Controller()
@@ -35,10 +38,12 @@ print(rows)
 
 @app.route('/')
 def index():
+    # display all courses for user, if eligible can enroll, if not none
     return render_template('Learner_course.html',headings = headings,rows = rows)# this is to allow the display of the html page 
 
 @app.route('/success',methods = ["GET","POST"])
 def enrol():
+    # Enrols the user to course and class
     if request.method == "POST":
         course = request.json
         course_enrolled = course[1]
@@ -52,7 +57,7 @@ def enrol():
         
          
     
-    
+
 
 # then go to course class tkae the size limit.capacitty is counted at looking at enrolled and class id and course id.
 
