@@ -71,6 +71,26 @@ def engineer_enroll():
             "code":500,
             "message":"An error occurred while enrolling for course: " + str(e)
         }),500
+
+@app.route('/HR/getAllCourses')
+def hr_getAllCourses():
+    sql = "SELECT * FROM courses"
+    result = db.fetch(sql)
+    courses = []
+    for row in result:
+        course = Course(row['Course_ID'],row['Course_Name'],row['Course_Outline'])
+        courses.append({
+            "course_id": course.cid(),
+            "course_name": course.name(),
+            "course_outline": course.outline()
+        })
+    
+    return jsonify({
+        "courses": courses
+    })
+
+
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
-

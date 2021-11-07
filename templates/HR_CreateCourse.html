@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Trainers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+
+  <style>
+    .wrapper {
+    text-align: center;
+    }
+
+    .button {
+    position: absolute;
+    top: 50%;
+      }
+
+  </style>
+<body>
+
+<h1 style ="text-align:center;">Create Courses </h1>
+
+<form  id='CreateCourse' name = "CreateCourse" action = "" onsubmit="return validateForm()" method = "POST">
+
+<div style="text-align: center;">
+
+  <label for="lname">Course ID:</label>
+  <input type="text" id="lname" name="id"><br><br>
+
+  <label for="fname">Course Name:</label>
+  <input type="text" id="fname" name="CourseName"><br><br>
+
+  <label for="lname">Course Outline:</label>
+  <input type="text" id="lname" name="outline"><br><br>
+
+  <label for="lname">Number of classes:</label>
+  <input type="text" id="lname" name="class_id"><br><br>
+
+  <label for="lname">Course Prerequisites:</label>
+  <select id='prereqs' multiple></select>
+  <br><br> 
+
+  <input id='createCourseBtn' type="submit" value="Submit">
+
+</div>
+</form>
+
+<script>
+// Prevent Form Submission to another page
+document.getElementById("createCourseBtn").addEventListener("click", function(event){
+  event.preventDefault()
+});
+
+async function getAllCourses() {
+  let url = 'http://localhost:5000/HR/getAllCourses'
+   const response = await fetch(url,{method: 'GET'});
+
+  if (!response.ok) {
+    console.log("Error in retrieving getAllClasses")
+  }
+  else {
+    const data = await response.json()
+    console.log(data)
+    let prereq_select = document.getElementById("prereqs")
+    for (course of data['courses']) {
+      prereq_select.innerHTML += `
+      <option value='`+course['course_id']+`'>`+course['course_id']+`</option>`
+    }
+
+  }
+
+
+}
+
+getAllCourses()
+function validateForm() {
+  var CourseName = document.forms["CreateCourse"]["CourseName"].value;
+  var Course_prereq = document.forms["CreateCourse"]["course_prereq"].value;
+  var CourseID = document.forms["CreateCourse"]["id"].value;
+  var CourseOutline = document.forms["CreateCourse"]["outline"].value;
+  var Class_ID = document.forms["CreateCourse"]["class_id"].value;
+  var ErrorMessage = ""
+
+  if (CourseName == "") {
+    ErrorMessage += "Course Name Field must be filled out \n"
+    return false;
+  }
+
+  if (Class == "") {
+    ErrorMessage += "Course ID must be filled out \n"
+  }
+
+
+  if (Trainer == "") {
+    ErrorMessage += "Course Outline must be filled out \n"
+  }
+
+  if(ErrorMessage !="")
+  {
+    alert(ErrorMessage);
+    return false;
+  }
+  
+  
+
+
+
+}
+</script>
+  
+</body>
+</html>
