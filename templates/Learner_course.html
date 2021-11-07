@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Enrolment</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+
+  <style>
+    .wrapper {
+    text-align: center;
+    }
+
+    .button {
+    position: absolute;
+    top: 50%;
+      }
+
+  </style>
+
+<script>
+
+
+
+$(document).ready(function(){
+
+$(".enrol").click(function() {
+  var $item = $(this).closest("tr")   // Finds the closest row <tr> 
+                       .find(".nr")     // Gets a descendent with class="nr"
+                       .text();         // Retrieves the text within <td>
+
+    console.log($item)
+    button = document.getElementById('enrol').innerText = 'Enrolled'
+    button.innerText = 'Enrolled'
+    button.disabled = true
+    var myArr = $item.split(" ");
+    var js_data = JSON.stringify(myArr);
+    $.ajax({                        
+              url: 'http://127.0.0.1:5000/success',
+              type : 'post',
+              contentType: 'application/json',
+              dataType : 'json',
+              data : js_data
+                    }).done(function(result) {
+                      console.log(result);
+                      $("#data").html(result);
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        console.log("fail: ",textStatus, errorThrown);
+                    });
+           // Outputs the answer
+});
+
+});
+
+
+
+
+</script>
+
+
+<body>
+  <h1 style ="text-align:center;">Welcome Learner</h1>
+
+<table class="table" id = "tableid">
+    <thead class="thead-dark">
+      <tr>
+        {% for header in headings %}
+       <th>{{header}}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for row in rows %}
+
+      
+      <tr>
+      {% for value in row %}
+      
+
+      <td class ="nr"> {{value}}</td>
+      {% if value == "eligible" and row[2] <= row[3] %}
+      <td><button type="button" class="btn btn-success enrol"  name ="enrol" id = "enrol" >Enrol</button> </td>
+      {% endif %}
+    
+      {% endfor %}
+      </tr>
+      {% endfor %}
+        
+    </tbody>
+  
+  </table>
+  
+  
+  
+
+  
+  
+</body>
+</html>

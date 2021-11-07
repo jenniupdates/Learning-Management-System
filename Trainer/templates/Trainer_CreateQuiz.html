@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Trainers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+<body>
+
+<h1 style ="text-align:center;">Courses</h1>
+<h2 style ="text-align:center;">Intro To Engineering</h2>
+
+<style>
+  #trueFalse{
+    display: none;
+  }
+
+  #multiple{
+    display: none;
+  }
+</style>
+
+<script>
+
+
+function showMCQ() {
+  var show_mcq = document.getElementById("trueFalse");
+  if (show_mcq.style.display === "none") {
+    show_mcq.style.display = "block";
+  } else {
+    show_mcq.style.display = "none";
+  }
+}
+
+function showMultiple() {
+  var show_mcq = document.getElementById("multiple");
+  if (show_mcq.style.display === "none") {
+    show_mcq.style.display = "block";
+  } else {
+    show_mcq.style.display = "none";
+  }
+}
+
+
+
+  var quiz = []/*placeholder to store the answer for both mcq and truefalse*/
+  var answers = []/*final answer to submit to database for both mcq and truefalse*/
+  var MCQ_questions = []/*final question to be push to the database */
+  var MCQ_question =[]/*placeholder to store mcq question */
+  var question_id = 1/*to set the question 1 as the start */
+
+  function True_falseInput(){
+    var input = document.getElementById('Question').value;
+    /*console.log(input)*/
+
+    true_false = document.querySelector('input[name="true_false"]:checked').value;
+    /*console.log(true_false)*/
+
+    quiz.push(question_id,input,1,true_false)
+    
+    if(quiz.length > 0){
+      answers.push(quiz)
+      quiz =[]
+      question_id += 1
+      }
+  
+    
+    }
+
+  function MultipleInput(){
+  var input2 = document.getElementById('Question2').value;
+
+  var option1 = document.getElementById('option1').value;
+  var option2 = document.getElementById('option2').value;
+  var option3 = document.getElementById('option3').value;
+  var option4 = document.getElementById('option4').value;
+
+  var correct_ans = document.getElementById('RightAns').value;
+  
+  
+  quiz.push(question_id)
+  quiz.push(input2)
+  quiz.push(2) /* this is to push the question type */
+  quiz.push(correct_ans)
+
+  MCQ_question.push(question_id,option1,option2,option3,option4)
+
+  if(quiz.length > 0){
+
+    answers.push(quiz)
+    MCQ_questions.push(MCQ_question)
+    MCQ_question = []
+    quiz =[]
+    question_id += 1
+  }
+  
+}
+
+function final_submit(){
+  console.log(answers)
+  console.log(MCQ_questions)
+  
+}
+
+
+
+
+
+
+
+
+    $(document).ready(function () {
+      $("#final_submit").off("click").on("click", function() {
+      
+      var data =JSON.stringify(answers)
+      var data1 = JSON.stringify(MCQ_questions)
+      $.ajax({                        
+              url: 'http://127.0.0.1:5000/answer',
+              type : 'post',
+              async:false,
+              contentType: 'application/json',
+              dataType : 'json',
+              data: data
+                    }).done(function(result) {
+                      console.log(result);
+                      $("#data").html(result);
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        console.log("fail: ",textStatus, errorThrown);
+                    });
+      $.ajax({                        
+              url: 'http://127.0.0.1:5000/mcqOptions',
+              type : 'post',
+              contentType: 'application/json',
+              dataType : 'json',
+              data: data1
+                    }).done(function(result) {
+                      console.log(result);
+                      $("#data").html(result);
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        console.log("fail: ",textStatus, errorThrown);
+                    });
+
+
+            
+                });
+      
+      
+        
+            });
+
+
+  
+  
+</script>
+
+<div class ="container">
+
+    <label for="fname">Time limit:</label>
+    <input type="text" id="Question" name="time_limit"><br><br>
+  
+    <button id="quiz_submit" onclick =quiz_submit()> Submit</button>
+
+
+  <button onclick="showMCQ()">True/False</button>
+  <button onclick="showMultiple()">Multiple Choice</button>
+  
+
+
+  <div id="trueFalse" >
+    <label for="fname">Question:</label>
+    <input type="text" id="Question" name="Question"><br><br>
+  
+    <div>
+      <input type="radio" id="True" name="true_false" value="True">
+      <label for="True">True</label>
+    </div>
+    
+    <div>
+      <input type="radio" id="False" name="true_false" value="False">
+      <label for="False">False</label>
+    </div>
+  
+    <button type="button" name="button" onclick="True_falseInput()"> Submit</button>
+  
+  </div>
+  
+</div>
+<br>
+
+<div class = "container" id ="multiple">
+  Question <input type="text" id="Question2" name="Question"><br><br>
+  
+
+  Options:<br><br>
+
+  <input type="text" id="option1" name="option1"><br><br>
+  <input type="text" id="option2" name="option2"><br><br>
+  <input type="text" id="option3" name="option3"><br><br>
+  <input type="text" id="option4" name="option4"><br><br>
+
+  Correct Ans:
+  <input type="text" id="RightAns" name="RightAns"><br><br>
+
+  <button type="button" name="button" onclick="MultipleInput()"> Submit</button>
+
+</div>
+
+
+<button id="final_submit" onclick =final_submit()>Final Submit</button>
+
+
+
+
+
+
+<p><span id = "display"></span></p>
+  
+</body>
+</html>
