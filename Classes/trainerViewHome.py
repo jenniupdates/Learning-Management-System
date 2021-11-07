@@ -119,15 +119,17 @@ def upload_file():
         db.execute(sql,val)
         return 'file uploaded successfully'
 
-@app.route('/download/',methods=['GET', 'POST'])
+@app.route('/download',methods=['GET', 'POST'])
 def download():
     # NEED TO FIX
-    download_id = request.args.get('ui')
+    download_id = request.args.get('di')
+    file_name = request.args.get('name')
+    download_id_list = download_id.split("-")
     sql = "SELECT * FROM Section_Course_Materials WHERE Course_ID = %s AND Class_ID = %s AND Section_ID = %s"
-    val = ('IS111',1,1)
+    val = (download_id_list[0],download_id_list[1],download_id_list[2])
     result = db.fetch(sql,val)
     first_file = result[0]
-    return send_file(BytesIO(first_file['Course_Material']), attachment_filename='test.py',as_attachment=False,mimetype='application/zip')
+    return send_file(BytesIO(first_file['Course_Material']), attachment_filename=file_name,as_attachment=False,mimetype='application/zip')
 
 @app.route('/trainers/createQuiz')
 def createQuiz():

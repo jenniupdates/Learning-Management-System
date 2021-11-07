@@ -91,7 +91,7 @@
                                 for (material of section['course_materials']) {
                                     console.log(material)
                                     course_material += `<li>
-                                        <a id='`+material['material_id']+`'href='http://localhost:5000/download/'>`+material['name']+`</a>
+                                        <a href='http://localhost:5000/download?di=`+material['material_id']+`&name=`+material['name']+`'>`+material['name']+`</a>
                                     </li>`
                                 }
                                 course_material += `
