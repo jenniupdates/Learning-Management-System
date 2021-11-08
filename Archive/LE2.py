@@ -27,8 +27,8 @@ def getAllCourses():
     user_id = request.args.get('user_id')
     sql = "SELECT * FROM engineer_course_enrolment WHERE User_ID = %s AND (Course_Status = 'completed' OR Course_Status = 'enrolled' OR Course_Status = 'pending')"
     courses = []
-    val = user_id
-    result = db.fetch(sql, 1)
+    val = (user_id)
+    result = db.fetch(sql, val)
     for row in result:
         course = {}
         course["course_id"] = row["Course_ID"]

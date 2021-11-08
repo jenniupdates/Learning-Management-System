@@ -8,8 +8,8 @@ class TestQuestion(unittest.TestCase):
         question_name = q.getQuestionName()
         self.assertEqual(question_name, "Define Engineering")
 
-        solution = q.getQuestionSolution()
-        self.assertEqual(solution, "Engineering is art")
+        answer = q.getCorrectAnswer()
+        self.assertEqual(answer, "Engineering is art")
 
 
     def test_edit_Question(self):
@@ -19,8 +19,8 @@ class TestQuestion(unittest.TestCase):
         question_name = q.getQuestionName()
         self.assertEqual(question_name, "What is math?")
 
-        q.editQuestionSolution("Math is numbers")
-        solution = q.getQuestionSolution()
-        self.assertEqual(solution, "Math is numbers")
+        q.editCorrectAnswer("Math is numbers")
+        answer = q.getCorrectAnswer()
+        self.assertEqual(answer, "Math is numbers")
 
 
