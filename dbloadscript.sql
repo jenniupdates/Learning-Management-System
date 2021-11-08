@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS Course_Class;
 CREATE TABLE Course_Class (
 	Course_ID varchar(15) not null,
     Class_ID int not null,
-    Trainer_ID int not null,
+    Trainer_ID int,
     Class_Start date not null,
     Class_End date not null,
     Size_Limit int,
@@ -114,7 +114,8 @@ CREATE TABLE Section_Course_Materials (
 	Course_ID varchar(15) not null,
     Class_ID int not null,
     Section_ID int not null,
-    Course_Material BINARY not null,
+    Course_Material_Name varchar(200) not null,
+    Course_Material BINARY(255) not null,
     constraint PK primary key (Course_ID, Class_ID, Section_ID,Course_Material),
     foreign key (Course_ID, Class_ID, Section_ID) references Sections(Course_ID, Class_ID, Section_ID) on delete cascade on update cascade
 )engine=innoDB;
