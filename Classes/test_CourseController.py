@@ -1,5 +1,5 @@
 import unittest
-from CourseController import CourseController
+from Course_Controller import CourseController
 from Course import Course
 from Course_Class import Course_Class
 
