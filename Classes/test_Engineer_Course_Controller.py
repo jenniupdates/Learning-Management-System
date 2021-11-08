@@ -3,35 +3,49 @@
 # INSERT into quiz VALUES (5,60);
 # INSERT into sections VALUES (3,1,1,'WAD Part 0',5,'Part 0 Course Materials');
 # INSERT into engineer_course_section VALUES (3,1,3,1,'Available',5);
+import unittest
 from Engineer_Course_Controller import Engineer_Course_Controller 
 
-def test():
-    controller = Engineer_Course_Controller()
+class testEngineerCourseController(unittest.TestCase):
 
-    # Getting Enrolment, Section and Eligibility for a partiuclar engineer and course
-    engineer_course_enrolment = controller.getEngineerCourseEnrolment(1,1,1)
-    print("Old Enrolment: ", engineer_course_enrolment.getCourseStatus())
+    def setUp(self):
+        self.ecc = Engineer_Course_Controller()
 
-    engineer_course_section = controller.getEngineerCourseSection(3,1,3,2)
-    print("Old Section ",engineer_course_section.getSectionStatus())
+    def test(self):
+        # Getting Enrolment, Section and Eligibility for a partiuclar engineer and course
+        engineer_course_enrolment = self.ecc.getEngineerCourseEnrolment(1,1,1)
+        # print("Old Enrolment: ", engineer_course_enrolment.getCourseStatus())
+        oldenrolment = engineer_course_enrolment.getCourseStatus()
+        self.assertNotEqual(oldenrolment, None)
+           
+        engineer_course_section = self.ecc.getEngineerCourseSection(3,1,3,2)
+        oldsection = engineer_course_section.getSectionStatus()
+        self.assertNotEqual(oldsection, None)
 
-    # Update Course eligibility to complete
-    engineer_course_eligibility = controller.getEngineerCourseEligibility(1,1)
-    print("Old eligibility: ", engineer_course_eligibility.getCourseEligibility())
-    
-    controller.updateCourseEligibility(engineer_course_eligibility)
+        # Update Course eligibility to complete
+        engineer_course_eligibility = self.ecc.getEngineerCourseEligibility(1,1)
+        old_eligibility = engineer_course_eligibility.getCourseEligibility()
+        self.assertNotEqual(old_eligibility, None)
+        
+        self.ecc.updateCourseEligibility(engineer_course_eligibility)
 
-    new_engineer_course_eligibility = controller.getEngineerCourseEligibility(1,1)
-    print("New eligibility: ", new_engineer_course_eligibility.getCourseEligibility())
+        new_engineer_course_eligibility = self.ecc.getEngineerCourseEligibility(1,1)
+        new_eligibility = new_engineer_course_eligibility.getCourseEligibility()
 
-    controller.completeCourse(engineer_course_enrolment)
+        self.ecc.completeCourse(engineer_course_enrolment)
 
-    new_engineer_course_enrolment = controller.getEngineerCourseEnrolment(1,1,1)
-    print("New enrolment: ", new_engineer_course_enrolment.getCourseStatus())
+        new_engineer_course_enrolment = self.ecc.getEngineerCourseEnrolment(1,1,1)
+        newenrolment = new_engineer_course_enrolment.getCourseStatus()
 
-    prev_section = controller.getEngineerCourseSection(3,1,3,1)
-    controller.accessNextSection(prev_section)
-    new_section = controller.getEngineerCourseSection(3,1,3,2)
-    print("New updated section: ",new_section.getSectionStatus())
+        self.assertNotEqual(oldenrolment, newenrolment)
 
-test()
+        prev_section = self.ecc.getEngineerCourseSection(3,1,3,1)
+        self.ecc.accessNextSection(prev_section)
+        new_section = self.ecc.getEngineerCourseSection(3,1,3,2)
+        newsection = new_section.getSectionStatus()
+
+        self.assertNotEqual(oldsection, newsection)
+
+
+if __name__ == '__main__':
+    unittest.main()
