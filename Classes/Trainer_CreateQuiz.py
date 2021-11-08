@@ -8,7 +8,6 @@ from Database import DBHelper
 from Course import Course
 from Course_Class import Course_Class
 from Engineer_Course_Controller import Engineer_Course_Controller
-from Section_Controller import Section_Controller
 from Course_Controller import CourseController
 
 

@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template, redirect, url_for, send_file
 import requests
 from datetime import datetime
 from flask_cors import CORS
@@ -8,7 +8,6 @@ from Database import DBHelper
 from Course import Course
 from Course_Class import Course_Class
 from Engineer_Course_Controller import Engineer_Course_Controller
-from Section_Controller import Section_Controller
 from Course_Controller import CourseController
 from io import BytesIO
 
