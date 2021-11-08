@@ -1,0 +1,32 @@
+version: 2.1
+
+jobs:
+  run_tests:
+
+    docker:
+      - image: circleci/python:3.8
+
+    steps:
+      - checkout
+
+      - run: 
+          name: Install Python Dependencies
+          # echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
+          command: |
+            pip install -r requirements.txt
+
+      - run:
+          name: Testing
+          command: |
+            pytest --junitxml=teset-reports/junit.xml --html=test-reports/pytest-report.html --self-contained-html
+
+      - store_test_results:
+          path: test-reports
+
+      - store_artifacts:
+          path: test-reports
+
+workflows:
+  build_test:
+    jobs:
+      - run_tests  
