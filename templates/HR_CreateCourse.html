@@ -24,9 +24,11 @@
   </style>
 <body>
 
-<h1 style ="text-align:center;">Create Courses </h1>
+<h1 style ="text-align:center;">Create Course </h1>
 
-<form  id='CreateCourse' name = "CreateCourse" action = "" onsubmit="return validateForm()" method = "POST">
+<div id='message'></div>
+
+<form  id='CreateCourse' name = "CreateCourse" action = "" method = "POST">
 
 <div style="text-align: center;">
 
@@ -40,13 +42,27 @@
   <input type="text" id="lname" name="outline"><br><br>
 
   <label for="lname">Number of classes:</label>
-  <input type="text" id="lname" name="class_id"><br><br>
+  <input type="number" id="lname" name="num_classes" value='1' min='1'><br><br>
 
   <label for="lname">Course Prerequisites:</label>
-  <select id='prereqs' multiple></select>
-  <br><br> 
+  <select id='prereqs' multiple name='prereqs'></select><br><br> 
 
-  <input id='createCourseBtn' type="submit" value="Submit">
+  <label for="lname">Classes Start:</label>
+  <input type="date" id="class_start" name="class_start"><br><br>
+
+  <label for="lname">Classes End:</label>
+  <input type="date" id="lname" name="class_end"><br><br>
+
+  <label for="lname">Registration Start:</label>
+  <input type="date" id="lname" name="reg_start"><br><br>
+
+  <label for="lname">Registration End:</label>
+  <input type="date" id="lname" name="reg_end"><br><br>
+
+  <label for="lname">Size Limit:</label>
+  <input type="number" id="lname" name="size_limit" value='1' min='1'><br><br>
+
+  <input id='createCourseBtn' type="submit" onclick="validateForm()" value="Submit">
 
 </div>
 </form>
@@ -80,36 +96,117 @@ async function getAllCourses() {
 
 getAllCourses()
 function validateForm() {
-  var CourseName = document.forms["CreateCourse"]["CourseName"].value;
-  var Course_prereq = document.forms["CreateCourse"]["course_prereq"].value;
-  var CourseID = document.forms["CreateCourse"]["id"].value;
-  var CourseOutline = document.forms["CreateCourse"]["outline"].value;
-  var Class_ID = document.forms["CreateCourse"]["class_id"].value;
-  var ErrorMessage = ""
+  
+  let CourseName = document.forms["CreateCourse"]["CourseName"].value;
+  let CourseID = document.forms["CreateCourse"]["id"].value;
+  let CourseOutline = document.forms["CreateCourse"]["outline"].value;
+  let num_classes = document.forms["CreateCourse"]["num_classes"].value;
+  let prereq_select_options = document.forms['CreateCourse']['prereqs'].options;
+  let size_limit = document.forms["CreateCourse"]["size_limit"].value
+
+  let class_start = new Date(document.forms['CreateCourse']['class_start'].value);
+  let class_end = new Date(document.forms['CreateCourse']['class_end'].value);
+  let reg_start = new Date(document.forms['CreateCourse']['reg_start'].value);
+  let reg_end = new Date(document.forms['CreateCourse']['reg_end'].value);
+
+  let display_class_start = (class_start.getYear() + 1900) + "-" + (class_start.getMonth() + 1) + "-" + class_start.getDate()
+  let display_class_end = (class_end.getYear() + 1900) + "-" + (class_end.getMonth() + 1) + "-" + class_end.getDate()
+  let display_reg_start = (reg_start.getYear() + 1900) + "-" + (reg_start.getMonth() + 1) + "-" + reg_start.getDate()
+  let display_reg_end = (reg_end.getYear() + 1900) + "-" + (reg_end.getMonth() + 1) + "-" + reg_end.getDate()
+  console.log(class_start.getYear())
+  console.log(display_class_start)
+  console.log(display_class_end)
+  console.log(display_reg_start)
+  console.log(display_reg_end)
+
+  let prereqs = []
+  for (option of prereq_select_options) {
+    if (option.selected) {
+      prereqs.push(option.innerText)
+    }
+  }
+  console.log(prereqs)
+
+  let ErrorMessage = ""
+
+  if (CourseID == "") {
+    ErrorMessage += "Course ID Field must be filled out \n"
+
+  }
 
   if (CourseName == "") {
     ErrorMessage += "Course Name Field must be filled out \n"
-    return false;
+
   }
 
-  if (Class == "") {
-    ErrorMessage += "Course ID must be filled out \n"
+  if (display_class_start.includes('NaN')) {
+    ErrorMessage += "Class Start Date must be filled out \n"
   }
 
+  if (display_class_end.includes('NaN')) {
+    ErrorMessage += "Class End Date must be filled out \n"
+  }
 
-  if (Trainer == "") {
+  if (display_reg_start.includes('NaN')) {
+    ErrorMessage += "Registration Start Date must be filled out \n"
+  }
+
+  if (display_reg_end.includes('NaN')) {
+    ErrorMessage += "Registration End Date must be filled out \n"
+  }
+
+  if (CourseOutline == "") {
     ErrorMessage += "Course Outline must be filled out \n"
   }
 
   if(ErrorMessage !="")
   {
     alert(ErrorMessage);
-    return false;
+  }
+  else {
+    createCourse()
+  }
+
+  async function createCourse() {
+    let url = 'http://localhost:5000/HR/createCourse'
+    const response = await fetch(url,
+                    {
+                        method: "POST",
+                        headers: {
+                           "Content-type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "courseID": CourseID,
+                            "courseName": CourseName,
+                            "courseOutline": CourseOutline,
+                            "numOfClasses": num_classes,
+                            "prereq_list": prereqs,
+                            "class_start": display_class_start,
+                            "class_end": display_class_end,
+                            "reg_start": display_reg_start,
+                            "reg_end": display_reg_end,
+                            "size_limit": size_limit
+                        })
+                    });
+    if (!response.ok) {
+      let message = document.getElementById("message");
+      message.innerHTML = `<div class="alert alert-danger" role="alert">`+"ERROR!"+`</div>`
+    }
+    else {
+      const data = await response.json();
+      if (data['code'] == 200) {
+        let message = document.getElementById("message");
+        message.innerHTML = `<div class="alert alert-success" role="alert">`+data["message"]+`</div>`
+        setTimeout(function() {
+              window.location.replace("HR_CreateCourse.html");
+            }, 3000)
+      }
+      else {
+        message.innerHTML = `<div class="alert alert-danger" role="alert">`+data["message"]+`</div>`
+      }
+    }
   }
   
-  
-
-
 
 }
 </script>
