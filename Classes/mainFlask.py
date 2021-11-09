@@ -624,9 +624,31 @@ def completeSection():
         "message": "Completed course successsfully"
     })
 
-@app.route('/engineer/accessNextSection')
-def accessNextSection():
-    pass
+@app.route('/engineer/makeNextSectionAvl', methods=['POST'])
+def makeNextSectionAvl():
+    course_id = request.json.get('course_id')
+    class_id = request.json.get('class_id')
+    section_id = int(request.json.get('section_id'))
+    user_id = request.json.get('user_id')
+    next_section_id = section_id + 1
+    # Check if next section exist
+    sql = "SELECT * FROM engineer_course_section WHERE Course_ID = %s AND Class_ID = %s AND User_ID = %s AND Section_ID = %s"
+    val = (course_id,class_id,user_id,next_section_id)
+    result = db.fetch(sql,val)
+    if len(result) == 0:
+        return jsonify({
+            "next?": "no",
+            "message": "You have reached the last section of this course. You now need to take the final quiz and get 80% in order to pass the course."
+        })
+    else:
+        sql2 = "UPDATE engineer_course_section SET Section_Status = %s WHERE Course_ID = %s AND Class_ID = %s AND User_ID = %s AND Section_ID = %s"
+        val2 = ("incomplete",course_id,class_id,user_id,next_section_id)
+        db.execute(sql2,val2)
+        return jsonify({
+            "next?": "yes",
+            "next_section_id": next_section_id,
+            "message": "You have completed this section. You may now proceed to the next section, or retake the quiz."
+        })
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

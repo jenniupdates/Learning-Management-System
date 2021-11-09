@@ -143,7 +143,6 @@
                 },
                 gradeQuiz: async function() {
                     document.getElementById("submitBtn").setAttribute("disabled",true)
-                    let small = document.getElementById("small")
                     let quiz_answers = []
                     let quiz = document.getElementById("quiz")
                     let jumbotron_list = quiz.getElementsByClassName("jumbotron");
@@ -203,8 +202,6 @@
                         let score_percent = no_correct / data['quiz_results'].length * 100
                         document.getElementById("result_percent").innerText = "Your Score: " + score_percent + "%"
                         this.completeSection();
-                        accessNextSection();
-                        small.innerText = "You have completed this section. You may now proceed to the next section, or retake the quiz."
                         document.getElementById("retakeQuiz").innerHTML = `<button type="button" class="btn btn-secondary" onclick='retakeQuiz()'>Retake Quiz</button>`
                     }
                 },
@@ -230,10 +227,42 @@
                     if (!response.ok) {
                         console.log("Error completing the section")
                     }
+                    else {
+                        this.makeNextSectionAvl(course_id,class_id,section_id,this.user_id)
+                    }
                     
                 },
-                accessNextSection: async function() {
-                    document.getElementById("nextSection").innerHTML = `<button type="button" class="btn btn-info">Proceed to Next Section</button>`
+                makeNextSectionAvl: async function(course_id,class_id,cur_section_id,user_id) {
+                    let url = 'http://localhost:5000/engineer/makeNextSectionAvl'
+                    let small = document.getElementById("small")
+                    const response = await fetch(url,
+                    {
+                        method: "POST",
+                        headers: {
+                           "Content-type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "course_id": course_id,
+                            "class_id": class_id,
+                            "section_id": cur_section_id,
+                            "user_id": this.user_id,
+                        })
+                    });
+                    if (!response.ok) {
+                        console.log("Error making next section available")
+                    }
+                    else {
+                        const data = await response.json()
+                        if (data['next?'] == "yes") {
+                            let link = `Engineer_CourseSection.php?course_id=`+course_id+`&class_id=`+class_id+`&section_id=`+data['next_section_id']
+                            small.innerText = data['message']
+                            document.getElementById("nextSection").innerHTML = `<a href='`+link+`'><button type="button" class="btn btn-info">Proceed to Next Section</button></a>`
+                        }
+                        else {
+                            small.innerText = data['message']
+                            document.getElementById("nextSection").innerHTML = `<a href=''><button type="button" class="btn btn-warning">Take Final Quiz</button></a>`
+                        }
+                    }
                 }
             },
 
@@ -247,10 +276,6 @@
 
         function retakeQuiz(){
             window.location.reload();
-        }
-
-        async function accessNextSection() {
-            document.getElementById("nextSection").innerHTML = `<button type="button" class="btn btn-info">Proceed to Next Section</button>`
         }
     </script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

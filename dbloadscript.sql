@@ -69,7 +69,7 @@ CREATE TABLE Question (
 
 INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-1', '1', 'What is x * y', '1', '1000'); -- changed to fit MCQ_Options
 INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-1', '2', 'printf(\"hihi\")', '1', 'hihi');
-INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-2', '3', 'WAD2ishard', '2', 'T');
+INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-2', '1', 'WAD2ishard', '2', 'T');
 
 DROP TABLE IF EXISTS Course_Class;
 CREATE TABLE Course_Class (
@@ -136,7 +136,8 @@ INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES 
 INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-1', '2', 'hihi'); -- correct answer
 INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-1', '2', 'bibi');
 INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-1', '2', 'lili');
-INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-2', '3', 'T'); -- new line for testing
+INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-2', '1', 'T'); -- new line for testing
+INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-2', '1', 'F'); -- new line for testing
 
 DROP TABLE IF EXISTS Engineer_Course_Enrolment;
 CREATE TABLE Engineer_Course_Enrolment (
