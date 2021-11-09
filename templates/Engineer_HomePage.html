@@ -55,6 +55,7 @@
           <th scope="col">Course Name</th>
           <th scope="col">Class</th>
           <th scope="col">Course Status</th>
+          <th scope="col">Withdraw from Course</th>
         </tr>
       </thead>
       <tbody id="uclass_list_pending">
@@ -131,6 +132,7 @@
                     <td>`+ucourse_name+`</td>`+`
                     <td>`+uclass_id+`</td>`+`
                     <td>`+ucourse_status+`</td>`+`
+                    <td><button type="button" class="btn btn-danger" onclick="withdrawFromCourse('`+ucourse_name+`','`+uclass_id+`')">Withdraw</button></td>
                     </tr>
                     `
                     pending_count += 1
@@ -155,11 +157,12 @@
                   uclass_list_pending.innerHTML += 
                     `
                     <tr>
-                    <td colspan='3' style ="text-align:center;">You have no courses pending enrolment from HR.</td>`+`
+                    <td colspan='4' style ="text-align:center;">You have no courses pending enrolment from HR.</td>`+`
                   </tr>`
               }
             }
         },
+
 
       },
           
@@ -167,6 +170,22 @@
         this.getAllCourses();
       }
     });
+
+    async function withdrawFromCourse(course_id, class_id){
+      let url = 'http://localhost:5000/users/withdrawFromCourse?user_id=' + app.user_id + '&course_id=' + course_id + '&class_id=' + class_id
+      const response = await fetch(url, {method: "GET"});
+      if(!response.ok){
+        console.log("Error calling withdrawFromCourse")
+      }
+      else {
+        const data = await response.json()
+        console.log(data["message"])
+        setTimeout(function(){
+          window.location.replace("Engineer_HomePage.html");
+        }, 4000)
+      }
+    }
+
   </script>
   
   
