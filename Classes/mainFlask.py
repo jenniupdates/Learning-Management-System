@@ -566,7 +566,49 @@ def hr_createCourse():
             "code":500,
             "message":"An error occurred while creating course: " + str(e)
         }),500
+        
+@app.route('/users/getAllCourses')
+def users_getAllCourses():
+    user_id = request.args.get('user_id')
+    sql = "SELECT * FROM engineer_course_enrolment WHERE User_ID = %s AND (Course_Status = 'completed' OR Course_Status = 'enrolled' OR Course_Status = 'pending')"
+    courses = []
+    val = user_id
+    result = db.fetch(sql, val)
+    for row in result:
+        course = {}
+        course["course_id"] = row["Course_ID"]
+        course["class_id"] = row["Class_ID"]
+        course["course_status"] = row["Course_Status"]
+        courses.append(course)
+    return jsonify (
+        {
+            "courses" : courses
+        }
+    )
 
+@app.route('/users/getClassSections')
+def getClassSections():
+    course_id = request.args.get('course_id')
+    class_id = request.args.get('class_id')
+    user_id = request.args.get('user_id')
+    sections = []
+    sql = 'SELECT ecs.Section_ID, ecs.Section_Status, s.Description, s.Quiz_ID, s.Course_Material FROM engineer_course_section AS ecs INNER JOIN sections AS s ON ecs.Course_ID = s.Course_ID AND ecs.Class_ID = s.Class_ID AND ecs.Section_ID = s.Section_ID WHERE (ecs.Course_ID, ecs.Class_ID, ecs.User_ID) = (%s,%s,%s)'
+    val = (course_id, class_id, user_id)
+    result = db.fetch(sql, val)
+    sections = []
+    for row in result:
+        section = {}
+        section["section_id"] = row["Section_ID"]
+        section["section_status"] = row["Section_Status"]
+        section["description"] = row["Description"]
+        section["quiz_id"] = row["Quiz_ID"]
+        section["course_material"] = row["Course_Material"]
+        sections.append(section)
+    return jsonify(
+        {
+            "sections" : sections,
+        }
+    )
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
