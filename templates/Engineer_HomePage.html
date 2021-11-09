@@ -19,7 +19,7 @@
 <body>
 
 <div id="app" class="container">
-  <h1 style ="text-align:center;">Courses</h1>
+  <h1 style ="text-align:center;">Welcome Home!</h1>
 
   <h2 style ="text-align:center;">User Name: {{user_name}}</h2> <br><br>
   <h3 style ="text-align:center;">Courses Enrolled</h3>
@@ -42,6 +42,7 @@
           <th scope="col">Course Name</th>
           <th scope="col">Class</th>
           <th scope="col">Course Status</th>
+          <th scope="col">View Sections</th>
         </tr>
       </thead>
       <tbody id="uclass_list_completed">
@@ -59,6 +60,9 @@
       <tbody id="uclass_list_pending">
       </tbody>
     </table>
+    <div style ="text-align:center;">
+      <a href='Engineer_viewAllCourses.html'><button type="button" class="btn btn-info">Enroll for New Courses</button></a>
+    </div>
 </div>
   <script>
     var app = new Vue({
@@ -67,7 +71,7 @@
         'courses': [],
         'classes': [],
         'user_name' : 'Richard',
-        'user_id': '3',
+        'user_id': '1',
         'course_status_list': []
       },
       methods: {
@@ -103,6 +107,7 @@
                     <td>`+ucourse_name+`</td>`+`
                     <td>`+uclass_id+`</td>`+`
                     <td>`+ucourse_status+`</td>`+`
+                  <td>`+`<a href='Engineer_ViewSections.php?course_id=`+ucourse_name+`&class_id=`+uclass_id+`'><button type="button" class="btn btn-warning">View Sections</button></td></a>`+`
                   </tr>
                     `
                     completed_count++
@@ -114,7 +119,7 @@
                     <td>`+ucourse_name+`</td>`+`
                     <td>`+uclass_id+`</td>`+`
                     <td>`+ucourse_status+`</td>`+`
-                    <td>`+`<button type="button" class="btn btn-warning">View Sections</button></td>`+`
+                    <td>`+`<a href='Engineer_ViewSections.php?course_id=`+ucourse_name+`&class_id=`+uclass_id+`'><button type="button" class="btn btn-warning">View Sections</button></td></a>`+`
                   </tr>
                     `
                     enrolled_count++
@@ -136,7 +141,7 @@
                   uclass_list_completed.innerHTML += 
                     `
                     <tr>
-                    <td colspan='3' style ="text-align:center;">You have no courses completed.</td>`+`
+                    <td colspan='4' style ="text-align:center;">You have no courses completed.</td>`+`
                   </tr>`
               }
               if (enrolled_count == 0) {

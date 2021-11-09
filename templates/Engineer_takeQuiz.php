@@ -1,6 +1,7 @@
 <?php
     if (isset($_GET['quiz_id'])) {  
         $quiz_id = $_GET['quiz_id'];
+        $user_id = $_GET['user_id'];
     }
 ?>
 
@@ -15,7 +16,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <!-- Custom CSS -->    
-    <link rel="stylesheet" href='static/css/courseIntro.css'>
     <title>Upload Course Materials</title>
 </head>
 <body>
@@ -59,6 +59,7 @@
         <!-- END OF NAV BAR -->
         <div class="container">
             <input type='hidden' id='quiz_id' value='<?= $quiz_id ?>'>
+            <input type='hidden' id='user_id' value='<?= $user_id ?>'>
             <h1 class='text-center'>Quiz</h1>
             <div id="quiz">
             </div>
@@ -88,7 +89,8 @@
             el: '#app',
             data: {
                 'quiz_id': null,
-                'quiz_data': null
+                'quiz_data': null,
+                'user_id': null
 
             },
             methods: {
@@ -200,14 +202,43 @@
                         }
                         let score_percent = no_correct / data['quiz_results'].length * 100
                         document.getElementById("result_percent").innerText = "Your Score: " + score_percent + "%"
+                        this.completeSection();
+                        accessNextSection();
                         small.innerText = "You have completed this section. You may now proceed to the next section, or retake the quiz."
-                        document.getElementById("nextSection").innerHTML = `<button type="button" class="btn btn-info" onclick='accessNextSection()'>Proceed to Next Section</button>`
                         document.getElementById("retakeQuiz").innerHTML = `<button type="button" class="btn btn-secondary" onclick='retakeQuiz()'>Retake Quiz</button>`
                     }
                 },
+                completeSection: async function() {
+                    let quiz_id_split = this.quiz_id.split("-")
+                    let course_id = quiz_id_split[0]
+                    let class_id = quiz_id_split[1]
+                    let section_id = quiz_id_split[2]
+                    let url = "http://localhost:5000/engineer/completeSection"
+                    const response = await fetch(url,
+                    {
+                        method: "POST",
+                        headers: {
+                           "Content-type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "course_id": course_id,
+                            "class_id": class_id,
+                            "section_id": section_id,
+                            "user_id": this.user_id,
+                        })
+                    });
+                    if (!response.ok) {
+                        console.log("Error completing the section")
+                    }
+                    
+                },
+                accessNextSection: async function() {
+                    document.getElementById("nextSection").innerHTML = `<button type="button" class="btn btn-info">Proceed to Next Section</button>`
+                }
             },
 
             created: function() {
+                this.user_id = document.getElementById("user_id").value;
                 this.quiz_id = document.getElementById("quiz_id").value;
                 this.getQuizQuestionsAndOptions();
 
@@ -218,8 +249,8 @@
             window.location.reload();
         }
 
-        function accessNextSection() {
-            
+        async function accessNextSection() {
+            document.getElementById("nextSection").innerHTML = `<button type="button" class="btn btn-info">Proceed to Next Section</button>`
         }
     </script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

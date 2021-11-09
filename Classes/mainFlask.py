@@ -592,7 +592,7 @@ def getClassSections():
     class_id = request.args.get('class_id')
     user_id = request.args.get('user_id')
     sections = []
-    sql = 'SELECT ecs.Section_ID, ecs.Section_Status, s.Description, s.Quiz_ID, s.Course_Material FROM engineer_course_section AS ecs INNER JOIN sections AS s ON ecs.Course_ID = s.Course_ID AND ecs.Class_ID = s.Class_ID AND ecs.Section_ID = s.Section_ID WHERE (ecs.Course_ID, ecs.Class_ID, ecs.User_ID) = (%s,%s,%s)'
+    sql = 'SELECT ecs.Section_ID, ecs.Section_Status, s.Description, s.Quiz_ID FROM engineer_course_section AS ecs INNER JOIN sections AS s ON ecs.Course_ID = s.Course_ID AND ecs.Class_ID = s.Class_ID AND ecs.Section_ID = s.Section_ID WHERE (ecs.Course_ID, ecs.Class_ID, ecs.User_ID) = (%s,%s,%s)'
     val = (course_id, class_id, user_id)
     result = db.fetch(sql, val)
     sections = []
@@ -602,13 +602,31 @@ def getClassSections():
         section["section_status"] = row["Section_Status"]
         section["description"] = row["Description"]
         section["quiz_id"] = row["Quiz_ID"]
-        section["course_material"] = row["Course_Material"]
         sections.append(section)
     return jsonify(
         {
             "sections" : sections,
         }
     )
+    
+    
+@app.route('/engineer/completeSection',methods=['POST'])
+def completeSection():
+    course_id = request.json.get('course_id')
+    class_id = request.json.get('class_id')
+    section_id = request.json.get('section_id')
+    user_id = request.json.get('user_id')
+    sql = "UPDATE engineer_course_section SET Section_Status = %s WHERE Course_ID = %s AND Class_ID = %s AND User_ID = %s AND Section_ID = %s"
+    val = ('completed',course_id,class_id,user_id,section_id)
+    db.execute(sql,val)
+    return jsonify({
+        "code": 200,
+        "message": "Completed course successsfully"
+    })
+
+@app.route('/engineer/accessNextSection')
+def accessNextSection():
+    pass
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

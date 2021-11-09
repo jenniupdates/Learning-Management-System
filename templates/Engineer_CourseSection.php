@@ -1,3 +1,9 @@
+<?php
+    $course_id = $_GET['course_id'];
+    $class_id = $_GET['class_id'];
+    $section_id = $_GET['section_id'];
+?>  
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,10 +15,12 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <!-- Custom CSS -->    
-    <link rel="stylesheet" href='static/css/courseIntro.css'>
     <title>Upload Course Materials</title>
 </head>
 <body>
+    <input type='hidden' id='course_id' value='<?=$course_id?>'>
+    <input type='hidden' id='class_id' value='<?=$class_id?>'>
+    <input type='hidden' id='section_id' value='<?=$section_id?>'>
     <div id='app'>
         <!-- NAV BAR -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -52,10 +60,17 @@
         </nav>
         <!-- END OF NAV BAR -->
         <div class="container">
+        <div class="row">
+                <div class="col">
+                    <div class="jumbotron">
+                        <p>Please download and review the following course materials for this section.</p>
+                        <ul id='course_materials'></ul>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col">
                     <div class="jumbotron">
-                        <h4>You have reached the end of this section.</h4>
                         <p>To move on, you need to take the quiz and get it 100% correct.</p>
                         <a :href='takeQuiz_link'><button id='startQuizBtn' type="button" class="btn btn-primary">Start Quiz</button></a>
                     </div>
@@ -71,8 +86,8 @@
                 "course_id": 'IS111', // Need to implement this dynamically
                 "class_id": 1, // Need to implement this dynamically
                 "section_id": 1, // Need to implement this dynamically
-                "takeQuiz_link": 'takeQuiz.php?quiz_id=',
-                "user_id": 1 // Need to implement this dynamically
+                "takeQuiz_link": 'Engineer_takeQuiz.php?quiz_id=',
+                "user_id": 1 // Hardcoded
             },
             methods: {
                 getQuizID: async function() {
@@ -91,11 +106,15 @@
                     }
                     else {
                         const data = await response.json()
-                        this.takeQuiz_link += data['quiz_id']
+                        this.takeQuiz_link += data['quiz_id'] + "&user_id=" + this.user_id
                     }
                 }
             },
             created: function() {
+                this.course_id = document.getElementById("course_id").value;
+                this.class_id = document.getElementById("class_id").value;
+                this.section_id = document.getElementById("section_id").value;
+
                 this.getQuizID();
             }
         });
