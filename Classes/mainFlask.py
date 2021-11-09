@@ -609,7 +609,20 @@ def getClassSections():
         }
     )
     
-    
+@app.route('/users/withdrawFromCourse')
+def withdrawFromCourse():
+    course_id = request.args.get('course_id')
+    class_id = request.args.get('class_id')
+    user_id = request.args.get('user_id')
+    sql = 'UPDATE engineer_course_enrolment SET course_status = "eligible" WHERE (Course_ID, Class_ID, User_ID) = (%s,%s,%s)'
+    val = (course_id, class_id, user_id)
+    db.execute(sql, val)
+    return jsonify({
+            "code": 200,
+            "message": "Course withdrawn from successfully! Refreshing page in 3 seconds."
+        })
+
+
 @app.route('/engineer/completeSection',methods=['POST'])
 def completeSection():
     course_id = request.json.get('course_id')
