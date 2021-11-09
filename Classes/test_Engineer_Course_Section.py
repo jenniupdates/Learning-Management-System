@@ -3,7 +3,7 @@ from Engineer_Course_Section import Engineer_Course_Section
 
 class testEngineer_Course_Section(unittest.TestCase):
     def test_getters2(self):
-        ecs = Engineer_Course_Section(10,2,4,5,'unavailable',5)
+        ecs = Engineer_Course_Section(10,2,4,5,'unavailable')
 
         uid = ecs.getUserID()
         self.assertEqual(uid,10)
@@ -24,5 +24,5 @@ class testEngineer_Course_Section(unittest.TestCase):
         section_status = ecs.getSectionStatus()
         self.assertEqual(section_status,'incomplete')
 
-        quiz_id = ecs.getQuizID()
-        self.assertEqual(quiz_id,5)
+        # quiz_id = ecs.getQuizID()
+        # self.assertEqual(quiz_id,5)
