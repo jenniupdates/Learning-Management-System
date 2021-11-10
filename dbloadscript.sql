@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS Course_Class;
 CREATE TABLE Course_Class (
 	Course_ID varchar(15) not null,
     Class_ID int not null,
-    Trainer_ID int,
+    Trainer_ID int not null, # set to 0 if no trainer has been assigned yet.
     Class_Start date not null,
     Class_End date not null,
     Size_Limit int,
@@ -84,7 +84,6 @@ CREATE TABLE Course_Class (
     Final_Quiz_ID varchar(100),
     constraint PK_Class primary key (Course_ID, Class_ID),
     foreign key (Course_ID) references Courses(Course_ID) on delete cascade on update cascade,
-    foreign key (Trainer_ID) references Users(User_ID) on delete cascade on update cascade,
     foreign key (Final_Quiz_ID) references Quiz(Quiz_ID)
 )engine=innoDB;
 
