@@ -130,15 +130,15 @@ def createQuiz():
     quiz_id = request.args.get('quiz_id')
     time_limit = request.args.get('time_limit')
     # split the quiz id into course, clas, section
+    sql1 = 'INSERT INTO quiz (quiz_id, time_limit) VALUES (%s,%s)'
+    val1 = (quiz_id, time_limit)
+    db.execute(sql1, val1)
     tmp = quiz_id.split("-")
     course_id = tmp[0]
     class_id = tmp[1]
     section_id = tmp[2]
-    sql1 = 'INSERT INTO quiz (quiz_id, time_limit) VALUES (%s,%s)'
     sql2 = 'UPDATE sections SET quiz_id = %s WHERE (course_id, class_id, section_id) = (%s, %s, %s)'
-    val1 = (quiz_id, time_limit)
     val2 = (quiz_id, course_id, class_id, section_id)
-    db.execute(sql1, val1)
     db.execute(sql2, val2)
     return jsonify({
         "course_id" : course_id,
@@ -151,6 +151,11 @@ def updateQuestions():
     data = request.get_json()
     quiz_id = data["quiz_id"]
     question_list = data["question_list"]
+    # delete all questions in the sql tableW for this quiz_id
+    sql = "DELETE FROM question WHERE quiz_id = %s"
+    val = quiz_id
+    db.execute(sql, val)
+    
     # insert into the question table in database
     for qn in question_list:
         # if question is true/false
@@ -759,6 +764,36 @@ def getMaxCapacity():
         })
     
     
+@app.route('/trainers/populateQuestions')
+def populateQuestions():
+    quiz_id = request.args.get('quiz_id')
+    question_list = []
+    sql = "SELECT time_limit FROM quiz WHERE quiz_id = %s"
+    val = quiz_id
+    result = db.fetch(sql, val)
+    sql1 = "SELECT * FROM question WHERE quiz_id = %s"
+    val1 = quiz_id
+    result1 = db.fetch(sql1, val1)
+    for row in result1:
+        curr_qn = {}
+        curr_qn["question_id"] = row["Question_ID"]
+        curr_qn["question"] = row["Question_Name"]
+        curr_qn["question_type"] = row["Question_Type"]
+        curr_qn["answer"] = row["Answer"]
+        if row["Question_Type"] == 2:
+            options = []
+            sql2 = "SELECT * FROM mcq_options WHERE (Quiz_ID, Question_ID) = (%s,%s)"
+            val2 = (quiz_id, row["Question_ID"])
+            result2 = db.fetch(sql2, val2)
+            for row2 in result2:
+                options.append(row2["Question_Option"])
+            curr_qn["mcq_options"] = options
+        question_list.append(curr_qn)
+    return jsonify({
+        "quiz_id": quiz_id,
+        "question_list": question_list,
+        "time_limit": result[0]["time_limit"]
+    })
     
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

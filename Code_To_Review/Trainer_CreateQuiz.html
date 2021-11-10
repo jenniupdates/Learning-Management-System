@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Vue.JS-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!-- Custom CSS -->    
+    <link rel="stylesheet" href='css/trainerUpload.css'>
+    <title>Create / Edit Quiz</title>
+</head>
+<body>
+    <div id='app'>
+        
+        <div class="container">
+            <h1 class="text-center">{{course_id}}</h1>
+            <h2 class="text-center">Class {{class_id}} - Section {{section_id}}</h2>
+            <div class="row text-center">
+                
+            </div>
+            <label for="fname">Time limit:</label>
+            <input type="number" id="time_limit" name="time_limit" v-model="time_limit">
+
+            </div>
+            <div id="quiz">
+                <br>
+                <h2 class="text-center">Quiz Details</h2>
+                <div id="quiz_details">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                            <th scope="col">Qn</th>
+                            <th scope="col">Qn Title</th>
+                            <th scope="col">Qn Type</th>
+                            <th scope="col">Options</th>
+                            <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                                <tr v-for="question in question_list">
+                                    <th scope="row">{{question.question_id}}</th>
+                                    <td>{{question.question}}</td>
+                                    <td v-if="question.question_type == 1">T/F</td>
+                                    <td v-else>MCQ</td>
+                                    <td>
+                                        <ol v-if="question.question_type == 2">
+                                            <li v-for="option in question.mcq_options">{{option}}</li>
+                                        </ol>
+                                        <ol v-else>
+                                            <li>True</li>
+                                            <li>False</li>
+                                        </ol>
+                                    </td>
+                                    <td>
+                                           <button type="button" class="btn btn-warning" v-on:click="deleteQuestion(question.question_id)">Delete Question</button>     
+                                    </td>
+                                </tr>
+                            </tbody>
+                    </table>
+                    <br>
+                    <h3>Create Quiz Question</h3> 
+                    
+                    Question Title: 
+                    <input type="text" id="question_name" class="form-control" placeholder="Enter your Question here.." aria-describedby="basic-addon1">
+
+                    <br>
+                    Question Type: 
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="MCQ" v-on:click="displayMCQ">
+                        <label class="form-check-label" for="exampleRadios1">
+                            MCQ
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="TF" v-on:click="displayTF" checked>
+                        <label class="form-check-label" for="exampleRadios2">
+                            T / F
+                        </label>
+                    </div>
+                    <br>
+
+                    <div v-if="isTF === true">
+                    Correct answer:
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tfoptions" id="true" value="true">
+                            <label class="form-check-label" for="true">
+                                True
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tfoptions" id="false" value="false" checked>
+                            <label class="form-check-label" for="false">
+                                False
+                            </label>
+                        </div>
+                    </div>
+                    <div v-else>
+                        Enter a MCQ Option:
+                        <input id='inputOption' type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                        <button id='enterMCQOption' type="button" class="btn btn-primary mt-2 mb-2" v-on:click='addOption()'>Add Option</button>
+                        <br>
+
+                        Select the correct option:
+                        <div id='options' class="jumbotron">
+                            
+                        </div>
+
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-success" v-on:click="createQuestion">Create Question</button>
+
+                </div>
+                <br><br>
+                <div id='submission'>
+                    Once all questions have been set, click the button below to publish the quiz. <br>
+                    <button type="button" class="btn btn-secondary" v-on:click="finalSubmit">Publish Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                "isTF": true,
+                "quiz_id": "",
+                "course_id": "",
+                "class_id": "",
+                "section_id": "",
+                "time_limit": 15,
+                "question_list": [],
+                "question_counter": 0,
+                "options": [],
+                "status": "create"
+            },
+            methods: {
+                displayTF: function() {
+                    this.isTF = true;
+                },
+                displayMCQ: function() {
+                    this.isTF = false;
+                },
+                fillMCQOptions: function() {
+                    document.getElementById("options").innerHTML = ""
+                    for (let i=0;i<this.options.length;i++) {
+                        document.getElementById("options").innerHTML += `
+                        <input class="form-check-input" type="radio" name="options" value="`+this.options[i]+`"> ` + this.options[i] + `</br>`
+                    }
+                },
+                addOption: function() {
+                    let option = document.getElementById('inputOption').value;
+                    this.options.push(option.trim())
+                    document.getElementById('inputOption').value = "";
+                    this.fillMCQOptions();
+                },
+                createQuestion: async function(){
+                    if (this.isTF == true){
+                        curr_question = {}
+                        let question = document.getElementById('question_name').value
+                        let question_type = 1
+                        let answer = document.querySelector('input[name="tfoptions"]:checked').value
+                        this.question_counter += 1
+                        curr_question["question_id"] = this.question_counter
+                        curr_question["question"] = question
+                        curr_question["answer"] = answer
+                        curr_question["question_type"] = question_type
+                        this.question_list.push(curr_question)
+                        document.getElementById('question_name').value = ""
+                        console.log(this.question_list)
+                    }
+                    else {
+                        curr_question = {}
+                        let options = document.getElementsByName('options')
+                        let question = document.getElementById('question_name').value
+                        let answer = document.querySelector('input[name="options"]:checked').value
+                        let question_type = 2
+                        this.question_counter += 1;
+                        var mcq = []
+                        for (option of options){
+                            mcq.push(option.value)
+                        }
+                        curr_question["question_id"] = this.question_counter
+                        curr_question["question"] = question
+                        curr_question["answer"] = answer
+                        curr_question["question_type"] = question_type
+                        curr_question["mcq_options"] = mcq
+                        this.question_list.push(curr_question)
+                        document.getElementById('question_name').value = ""
+                        console.log(this.question_list)
+                        // clear the options jumbotron
+                        this.options = []
+                        document.getElementById("options").innerHTML = ""
+                    }
+                    
+                },
+
+                deleteQuestion: async function(question_id){
+                    let question_list = this.question_list
+                    // delete from question_list using question_id
+                    question_list.splice(question_id-1, 1)
+                    // relabel all other questions to get correct question_id
+                    for (var i=0;i<question_list.length;i++){
+                        question_list[i]['question_id'] = i + 1
+                    }
+                    this.question_counter -= 1;
+                },
+
+                finalSubmit: async function(){
+                    // first create the quiz
+                    if (this.status == 'create'){
+                        console.log(this.quiz_id)
+                        console.log(this.time_limit)
+                        let url = 'http://localhost:5000/trainers/createQuiz?quiz_id=' + this.quiz_id + '&time_limit=' + this.time_limit;
+                        const response = await fetch(url, {method: 'GET'});
+                        if(!response.ok){
+                            console.log("Error in creating new quiz")
+                            }
+                        else{
+                            const data = await response.json();
+                            console.log(data);
+                            this.updateQuestions();
+                        }
+                    }
+                    else{
+                        this.updateQuestions();
+                    }
+                    // then upload the questions
+                },
+
+                updateQuestions: async function(){
+                    console.log(this.question_list);
+                    let url = 'http://localhost:5000/trainers/updateQuestions'
+                    const response = await fetch(url, 
+                    {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "quiz_id": this.quiz_id,
+                        "question_list": this.question_list
+                    })
+
+                    });
+
+                    if(!response.ok){
+                    console.log("Error calling updateQuestions");
+                    }
+                    else{
+                    const data = await response.json();
+                    console.log(data);
+                    }
+                },
+
+                populateQuestions: async function(){
+                    let url = 'http://localhost:5000/trainers/populateQuestions?quiz_id=' + this.quiz_id
+                    console.log(url)
+                    const response = await fetch(url, {method: 'GET'});
+                    if(!response.ok){
+                        console.log("Error in populating questions")
+                        }
+                    else{
+                        const data = await response.json();
+                        console.log(data);
+                        this.question_list = data["question_list"]
+                        this.time_limit = data["time_limit"]
+                    }
+                }
+
+            },
+
+            created(){
+                let search_url = window.location.href
+                var first = search_url.split("quiz_id=")[1]
+                console.log(first)
+                var result = first.split("&status=")[0]
+                this.quiz_id = result
+                var tmp = result.split("-")
+                this.course_id = tmp[0]
+                this.class_id = tmp[1]
+                this.section_id = tmp[2]
+                this.status = first.split("&status=")[1]
+                if (this.status == "edit"){
+                    this.populateQuestions();
+                }
+            }
+
+        });
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+</body>
+</html>
