@@ -241,7 +241,8 @@
                     },
                     body: JSON.stringify({
                         "quiz_id": this.quiz_id,
-                        "question_list": this.question_list
+                        "question_list": this.question_list,
+                        "time_limit": this.time_limit
                     })
 
                     });
@@ -267,6 +268,8 @@
                         console.log(data);
                         this.question_list = data["question_list"]
                         this.time_limit = data["time_limit"]
+                        this.question_counter = data["question_list"].length
+                        console.log(this.question_counter)
                     }
                 }
 
