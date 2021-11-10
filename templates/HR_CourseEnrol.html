@@ -76,6 +76,8 @@
       </div>
       <h1 style ="text-align:center;">{{ selected_course }} </h1>
       <h2 style ="text-align:center;"> Trainer: {{ trainer_name }} </h2>
+      <br>
+      <h2 style='text-align:center;'>Capacity: {{ cur_capacity }} / {{ max_capacity }} </h2>
 
       <div id="message"></div>
 
@@ -90,9 +92,10 @@
           <tbody id="learners">
 
           </tbody>
-        </table>
-        <div class="wrapper">
-          <button type="button" class="btn btn-danger" >back</button>
+      </table>
+      <br>
+      <div class="wrapper">
+          <a href='HR_Homepage.html'><button type="button" class="btn btn-danger" >Back to Homepage</button></a>
       </div>
     </div>
 </div>
@@ -106,6 +109,8 @@
               "selected_course_id": 'Loading...',
               "selected_class": '',
               "classes": [],
+              "cur_capacity": "Loading...",
+              "max_capacity": "Loading...",
               "trainer_name": "Loading..."
           },
           methods: {
@@ -170,6 +175,38 @@
                 let chosen_class = document.getElementById("class_list").value;
                 this.selected_class = chosen_class
                 this.updateTrainerName()
+                
+              },
+
+              getCurCapacity: async function() {
+                let class_id = this.selected_class
+                let course_id = this.selected_course_id
+                let url = 'http://localhost:5000/HR/getCurCapacity?class_id=' + class_id + '&course_id=' + course_id
+                const response = await fetch(url,{method: 'GET'});
+                if (!response.ok) {
+                  console.log("Error in retrieving Max Capacity")
+                }
+                else {
+                  const data = await response.json()
+                  this.cur_capacity = data['cur_capacity']
+                  this.getMaxCapacity()
+                }
+              },
+
+              getMaxCapacity: async function() {
+                let class_id = this.selected_class
+                let course_id = this.selected_course_id
+                let url = 'http://localhost:5000/HR/getMaxCapacity?class_id=' + class_id + '&course_id=' + course_id
+                const response = await fetch(url,{method: 'GET'});
+
+                  if (!response.ok) {
+                    console.log("Error in retrieving Max Capacity")
+                  }
+                  else {
+                    const data = await response.json()
+                    this.max_capacity = data['size_limit']
+                  }
+
               },
 
               updateTrainerName: async function() { 
@@ -222,6 +259,7 @@
                     }
 
                   }
+                  this.getCurCapacity()
               }
 
           },

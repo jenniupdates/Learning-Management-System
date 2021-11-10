@@ -66,6 +66,10 @@
 
 </div>
 </form>
+<br>
+<div class="wrapper">
+    <a href='HR_Homepage.html'><button type="button" class="btn btn-danger" >Back to Homepage</button></a>
+</div>
 
 <script>
 // Prevent Form Submission to another page
@@ -75,7 +79,7 @@ document.getElementById("createCourseBtn").addEventListener("click", function(ev
 
 async function getAllCourses() {
   let url = 'http://localhost:5000/HR/getAllCourses'
-   const response = await fetch(url,{method: 'GET'});
+  const response = await fetch(url,{method: 'GET'});
 
   if (!response.ok) {
     console.log("Error in retrieving getAllClasses")
@@ -113,11 +117,6 @@ function validateForm() {
   let display_class_end = (class_end.getYear() + 1900) + "-" + (class_end.getMonth() + 1) + "-" + class_end.getDate()
   let display_reg_start = (reg_start.getYear() + 1900) + "-" + (reg_start.getMonth() + 1) + "-" + reg_start.getDate()
   let display_reg_end = (reg_end.getYear() + 1900) + "-" + (reg_end.getMonth() + 1) + "-" + reg_end.getDate()
-  console.log(class_start.getYear())
-  console.log(display_class_start)
-  console.log(display_class_end)
-  console.log(display_reg_start)
-  console.log(display_reg_end)
 
   let prereqs = []
   for (option of prereq_select_options) {
@@ -125,7 +124,7 @@ function validateForm() {
       prereqs.push(option.innerText)
     }
   }
-  console.log(prereqs)
+
 
   let ErrorMessage = ""
 

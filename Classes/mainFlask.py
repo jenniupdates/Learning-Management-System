@@ -5,6 +5,7 @@ from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
 from Database import DBHelper
+from Person import Person
 from Course import Course
 from Course_Class import Course_Class
 from Engineer_Course_Controller import Engineer_Course_Controller
@@ -526,7 +527,7 @@ def hr_createCourse():
         # INSERT into course_class
         for i in range(1,num_classes+1):
             sql2 = "INSERT INTO course_class VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            val2 = (course_id,i,None,class_start,class_end,size_limit,reg_start,reg_end,None)
+            val2 = (course_id,i,0,class_start,class_end,size_limit,reg_start,reg_end,None)
             db.execute(sql2,val2)
         
         # INSERT into course_prereqs
@@ -561,7 +562,6 @@ def hr_createCourse():
         })
 
     except Exception as e:
-        print(e)
         return jsonify({
             "code":500,
             "message":"An error occurred while creating course: " + str(e)
@@ -662,6 +662,103 @@ def makeNextSectionAvl():
             "next_section_id": next_section_id,
             "message": "You have completed this section. You may now proceed to the next section, or retake the quiz."
         })
-
+        
+        
+@app.route('/HR/getTrainerlessClasses')
+def getTrainerlessClasses():
+    sql = "SELECT * FROM course_class WHERE Trainer_ID = %s"
+    val = (0)
+    result = db.fetch(sql,val)
+    trainerless_classes = []
+    for row in result:
+        sql2 = "SELECT * FROM courses WHERE Course_ID = %s"
+        val2 = (row['Course_ID'])
+        result2 = db.fetch(sql2,val2)
+        course = Course(result2[0]['Course_ID'],result2[0]['Course_Name'],result2[0]['Course_Outline'])
+        course_name = course.name()
+        trainer_class = {
+            "course_id": row['Course_ID'],
+            "class_id": row['Class_ID'],
+            "course_name": course_name
+        }
+        trainerless_classes.append(trainer_class)
+        
+    return jsonify({
+        "classes": trainerless_classes
+    })
+    
+@app.route('/HR/getTrainers')
+def getTrainers():
+    sql = "SELECT * FROM users WHERE UserType = %s"
+    val = (2)
+    result = db.fetch(sql,val)
+    trainers = []
+    for row in result:
+        person_trainer = Person(row['Name'],row['User_ID'],row['UserType'],row['Password'])
+        trainer = {
+            "user_id": person_trainer.getUserID(),
+            "name": person_trainer.getName()
+        }
+        trainers.append(trainer)
+    
+    return jsonify({
+        "trainers": trainers
+    })
+    
+@app.route('/HR/assignTrainer', methods=['PUT'])
+def assignTrainer():
+    try:
+        course_id = request.json.get('course_id')
+        class_id = request.json.get('class_id')
+        trainer_id = request.json.get('trainer_id')
+        
+        sql = "UPDATE course_class SET Trainer_ID = %s WHERE Course_ID = %s AND Class_ID = %s"
+        val = (trainer_id,course_id,class_id)
+        db.execute(sql,val)
+        
+        return jsonify({
+            "code": 200,
+            "message": "Trainer has been assigned to the class successfully. Refreshing page in 2 seconds."
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "code":500,
+            "message":"An error occurred while assigning trainer: " + str(e)
+        }),500
+        
+@app.route('/HR/getCurCapacity')
+def getCurCapacity():
+    class_id = request.args.get('class_id')
+    course_id = request.args.get('course_id')
+    sql = "SELECT * FROM engineer_course_enrolment WHERE Course_ID = %s AND Class_ID = %s AND (Course_Status = %s OR Course_Status = %s)"
+    val = (course_id,class_id,'enrolled','completed')
+    result = db.fetch(sql,val)
+    count = 0
+    for row in result:
+        count += 1
+    return jsonify({
+        "cur_capacity": count
+    })
+    
+@app.route('/HR/getMaxCapacity')
+def getMaxCapacity():
+    class_id = request.args.get('class_id')
+    course_id = request.args.get('course_id')
+    sql = "SELECT * FROM course_class WHERE Course_ID = %s AND Class_ID = %s"
+    val = (course_id,class_id)
+    result = db.fetch(sql,val)
+    if len(result) > 0:
+        size_limit = result[0]['Size_Limit']
+        return jsonify({
+            "size_limit": size_limit
+        })
+    else:
+        return jsonify({
+            "size_limit": "Not found"
+        })
+    
+    
+    
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
