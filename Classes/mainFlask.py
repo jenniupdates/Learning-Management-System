@@ -151,11 +151,15 @@ def updateQuestions():
     data = request.get_json()
     quiz_id = data["quiz_id"]
     question_list = data["question_list"]
+    time_limit = data["time_limit"]
     # delete all questions in the sql tableW for this quiz_id
     sql = "DELETE FROM question WHERE quiz_id = %s"
     val = quiz_id
     db.execute(sql, val)
-    
+    #update the time liit
+    sql = "UPDATE quiz SET time_limit = %s WHERE quiz_id = %s"
+    val = (time_limit, quiz_id)
+    db.execute(sql, val)
     # insert into the question table in database
     for qn in question_list:
         # if question is true/false
