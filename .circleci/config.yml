@@ -10,7 +10,7 @@ jobs:
           # MYSQL_ROOT_PASSWORD: rootpw
           MYSQL_DATABASE: g3t4
           MYSQL_USER: root
-          # MYSQL_PASSWORD: passw0rd
+          # MYSQL_PASSWORD:
 
     steps:
       - checkout
@@ -36,6 +36,7 @@ jobs:
           name: Install MySQL CLI and run script
           command: |
             pip install mysqlclient
+            pip install mysql-connector-python
             mysql -h 127.0.0.1 -u root g3t4 < dbloadscript.sql            
           # mysql -h 127.0.0.1 -u root --execute="DROP DATABASE IF EXISTS `g3t4`"
           # mysql -h 127.0.0.1 -u root --execute="CREATE DATABASE `g3t4`"
