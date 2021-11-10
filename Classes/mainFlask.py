@@ -170,7 +170,7 @@ def updateQuestions():
                 "VALUES (%s,%s,%s,%s,%s)"
             val = (quiz_id, qn['question_id'], qn['question'], qn['question_type'], qn['answer'])
             db.execute(sql, val)
-            for option in qn['mcq_choices']:
+            for option in qn['mcq_options']:
                 sql = "INSERT INTO mcq_options (Quiz_ID, Question_ID, Question_Option)" + \
                     "VALUES (%s, %s, %s)"
                 val = (quiz_id, qn['question_id'], option)
