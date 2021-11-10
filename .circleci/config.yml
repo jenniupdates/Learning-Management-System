@@ -1,10 +1,16 @@
 version: 2.1
 
 jobs:
-  run_tests:
+  build_and_test:
 
     docker:
       - image: circleci/python:3.8
+      - image: circleci/mysql:8.0.4
+        environment:
+          # MYSQL_ROOT_PASSWORD: rootpw
+          MYSQL_DATABASE: g3t4
+          MYSQL_USER: root
+          # MYSQL_PASSWORD: passw0rd
 
     steps:
       - checkout
@@ -14,6 +20,25 @@ jobs:
           # echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
           command: |
             pip install -r requirements.txt
+
+      - run:
+          name: Load MySQL
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+
+      - run:
+          name: Install MySQL CLI and run script
+          command: |
+            pip install mysqlclient
+            mysql -h 127.0.0.1 -u root g3t4 < dbloadscript.sql            
+          # mysql -h 127.0.0.1 -u root --execute="DROP DATABASE IF EXISTS `g3t4`"
+          # mysql -h 127.0.0.1 -u root --execute="CREATE DATABASE `g3t4`"
 
       - run:
           name: Testing
@@ -29,4 +54,4 @@ jobs:
 workflows:
   build_test:
     jobs:
-      - run_tests  
+      - build_and_test  
