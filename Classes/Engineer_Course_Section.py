@@ -1,13 +1,12 @@
 from Database import DBHelper
 
 class Engineer_Course_Section:
-    def __init__(self,uid,cid,sid,class_id,status,quiz_id):
+    def __init__(self,uid,cid,sid,class_id,status):
         self.user_id = uid
         self.course_id = cid
         self.section_id = sid
         self.class_id = class_id
         self.section_status = status # Unavailable , Available"
-        self.quiz_id = quiz_id 
         self.db = DBHelper()
 
     def getUserID(self):
@@ -24,10 +23,11 @@ class Engineer_Course_Section:
     
     def getSectionStatus(self):
         return self.section_status
-    
-    def getQuizID(self):
-        return self.quiz_id
 
     def updateSectionStatus(self):
         if self.section_status == "unavailable":
             self.section_status = "incomplete"
+
+    def completeSectionStatus(self):
+        if self.section_status == "incomplete":
+            self.section_status = "complete"

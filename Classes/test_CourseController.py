@@ -26,7 +26,6 @@ class testCourseController(unittest.TestCase):
         self.assertEqual(self.cc.sizelimit(), temp.sizelimit())
         self.assertEqual(self.cc.regstart(), temp.regstart())
         self.assertEqual(self.cc.regend(), temp.regend())
-        self.assertEqual(self.cc.fqid(), temp.fqid())
     
     def testgetPrereqs(self):
         self.assertEqual(self.ct.getPrereqs(self.co2), ['ES102','IS111'])

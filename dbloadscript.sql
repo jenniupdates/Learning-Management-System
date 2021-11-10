@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS `g3t4`;
-CREATE DATABASE `g3t4`;
-USE `g3t4`;
+-- DROP DATABASE IF EXISTS `g3t4`;
+-- CREATE DATABASE `g3t4`;
+-- USE `g3t4`;
 DROP TABLE IF EXISTS Users;
 CREATE TABLE Users (
 	User_ID int not null auto_increment,
