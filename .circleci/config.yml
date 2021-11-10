@@ -16,7 +16,7 @@ jobs:
       - checkout
 
       - run: 
-          name: Install Python Dependencies
+          name: Install Python, Flask and other Dependencies
           # echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
           command: |
             pip install -r requirements.txt
@@ -33,7 +33,7 @@ jobs:
             echo Failed waiting for MySQL && exit 1
 
       - run:
-          name: Install MySQL CLI and run script
+          name: Install MySQL CLI, Dependencies and Run Script
           command: |
             pip install mysqlclient
             pip install mysql-connector-python
