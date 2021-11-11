@@ -78,7 +78,8 @@
                 'name': '',
                 'last_id': 0,
                 'final_quiz_id': '',
-                'quiz_id': ''
+                'quiz_id': '',
+                'page_url': ''
             },
             methods: {
                 getAllSections: async function(){
@@ -86,7 +87,6 @@
                     let course_id = this.course_id
                     let last_id = this.last_id
                     let url = 'http://localhost:5000/trainers/getAllSections?course_id=' + course_id + '&class_id=' + class_id
-                    console.log(url)
                     let section_list = document.getElementById('section_list')
                     section_list.innerHTML = ''
                     const response = await fetch(url, {method: 'GET'});
@@ -97,19 +97,15 @@
                         const data = await response.json();
                         let section_list = document.getElementById('section_list')
                         for (section of data["sections"]){
-                            console.log(section);
                             section_id = section["section_id"]
                             description = section["description"]
                             quiz_id = section["quiz_id"]
-                            console.log("Checking if quiz_id is printed correctly")
-                            console.log(quiz_id)
                             course_material = ''
                             upload_id = course_id + "-" + class_id + "-" + section['section_id']
                             // Create empty button in initialized section for uploading course materials
                             if(section["course_materials"].length > 0) {
                                 course_material = `<ul>`
                                 for (material of section['course_materials']) {
-                                    console.log(material)
                                     course_material += `<li>
                                         <a href='http://localhost:5000/download?di=`+material['material_id']+`&name=`+material['name']+`'>`+material['name']+`</a>
                                     </li>`
@@ -119,7 +115,7 @@
                             }
 
                             course_material += `
-                            <form action = "http://localhost:5000/uploader?ui=`+upload_id+`" method = "POST"
+                            <form action = "http://localhost:5000/uploader?ui=`+upload_id+`&class_id=`+this.class_id+`&trainer_name=`+this.trainer_name+`&url='`+this.page_url+`'" method = "POST"
                             enctype = "multipart/form-data">
                             <input type = "file" name = "file"/> <input type = "submit"/>
                             `
@@ -193,6 +189,8 @@
                 }
             },
             created: function() {
+                this.page_url = window.location.href
+                console.log(this.page_url)
                 this.course_id = document.getElementById("course_id").value
                 this.class_id = document.getElementById("class_id").value
                 this.trainer_name = document.getElementById("trainer_name").value

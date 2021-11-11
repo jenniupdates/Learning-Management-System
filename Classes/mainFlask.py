@@ -104,18 +104,40 @@ def upload_file():
     if request.method == 'POST':
         upload_id = request.args.get('ui')
         upload_id_list = upload_id.split("-")
-        print(upload_id)
+        url = request.args.get('url')
+        class_id = request.args.get('class_id')
+        trainer_name = request.args.get('trainer_name')
         f = request.files['file']
         file_name = f.filename
         file_data = f.read()
         sql = "INSERT INTO Section_Course_Materials VALUES (%s,%s,%s,%s,%s)"
         val = (upload_id_list[0],upload_id_list[1],upload_id_list[2],file_name,file_data)
         db.execute(sql,val)
-        return 'file uploaded successfully'
+        print("url-------",url)
+        return "file uploaded successfully <script>window.location.replace("+url+"&class_id="+class_id+"&trainer_name="+trainer_name+"')</script>"
 
+@app.route('/engineer/getCourseMaterials')
+def engineer_getCourseMaterials():
+    course_id = request.args.get('course_id')
+    class_id = request.args.get('class_id')
+    section_id = request.args.get('section_id')
+    sql = "SELECT * FROM section_course_materials WHERE Course_ID = %s AND Class_ID = %s AND Section_ID = %s"
+    val = (course_id,class_id,section_id)
+    result = db.fetch(sql,val)
+    course_materials = []
+    for row in result:
+        material_id = course_id + "-" + class_id + "-" + section_id
+        course_materials.append({
+            "material_id": material_id,
+            "material_name": row['Course_Material_Name']
+        })
+    
+    return jsonify({
+        "course_materials": course_materials
+    })
+    
 @app.route('/download',methods=['GET', 'POST'])
 def download():
-    # NEED TO FIX
     download_id = request.args.get('di')
     file_name = request.args.get('name')
     download_id_list = download_id.split("-")
@@ -129,7 +151,7 @@ def download():
 def createQuiz():
     quiz_id = request.args.get('quiz_id')
     time_limit = request.args.get('time_limit')
-    # split the quiz id into course, clas, section
+    # split the quiz id into course, class, section
     sql1 = 'INSERT INTO quiz (quiz_id, time_limit) VALUES (%s,%s)'
     val1 = (quiz_id, time_limit)
     db.execute(sql1, val1)
@@ -829,5 +851,24 @@ def populateQuestions():
         "time_limit": result[0]["time_limit"]
     })
     
+@app.route('/getCoursePrerequisites')
+def getCoursePrerequisites():
+    course_prereq_dict = {}
+    sql = "SELECT * FROM courses"
+    result = db.fetch(sql)
+    for row in result:
+        course_id = row['Course_ID']
+        course_prereq_dict[course_id] = []
+        sql2 = "SELECT * FROM course_prereqs WHERE Course_ID = %s"
+        val2 = (course_id)
+        result2 = db.fetch(sql2,val2)
+        for row2 in result2:
+            course_prereq_dict[course_id].append(row2['Course_prereq_ID'])
+            
+    return jsonify({
+        "course_prereqs": course_prereq_dict
+    })
+    
+        
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

@@ -13,13 +13,40 @@
 
   <style>
     .wrapper {
-    text-align: center;
+      text-align: center;
     }
 
     .button {
-    position: absolute;
-    top: 50%;
+      position: absolute;
+      top: 50%;
       }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+      opacity: 1;
+    }
+
+    /* Tooltip text */
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      padding: 5px 0;
+      border-radius: 6px;
+    
+      /* Position the tooltip text - see examples below! */
+      position: absolute;
+      z-index: 1;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+    }
 
   </style>
 
@@ -60,7 +87,19 @@
         "user_id": 1, // Hardcoded
         "courses": []
       },
-      methods: {  
+      methods: { 
+        getCoursePrerequisites: async function() {
+          let url = 'http://localhost:5000/getCoursePrerequisites';
+          const response = await fetch(url,{method: "GET"});
+          if (!response.ok) {
+            console.log("Error calling getCoursePrerequisites")
+          }
+          else {
+            const data = await response.json();
+
+            return data['course_prereqs']
+          }
+        },
         getAllCourses: async function() {
           let url = 'http://localhost:5000/engineer/getAllCourses?user_id=' + this.user_id
           const response = await fetch(url,{method: "GET"})
@@ -69,8 +108,20 @@
           }
           else {
             const data = await response.json()
+            let course_prereqs = await this.getCoursePrerequisites();
             let course_list = document.getElementById("course_list")
             for (course of data['courses']) {
+              pre_requisite_text = 'Requires '
+              if (course_prereqs[course['course_id']].length < 1) {
+                pre_requisite_text = 'No prerequisites'
+              }
+              else {
+                for (prereq of course_prereqs[course['course_id']]) {
+                  pre_requisite_text += prereq + ", "
+                }
+                pre_requisite_text = pre_requisite_text.substr(0,pre_requisite_text.length-2)
+
+              }
               let disabled = 'disabled'
               let course_eligi = course['course_status']
               if (course['course_status'] == 'eligible') {
@@ -88,7 +139,7 @@
                 <td>`+course['course_id']+`</td>
                 <td>`+course['course_name']+`</td>
                 <td>`+course['course_outline']+`</td>
-                <td>`+course_eligi+`</td>
+                <td><div class="tooltip">`+course_eligi+`<span class='tooltiptext'>`+pre_requisite_text+`</span></div></td>
                 <td>`+class_select+`</td>
                 <td><button type="button" class="btn btn-success" onclick="enroll('`+course['course_id']+`')" `+disabled+`>Enroll</button></td>
               </tr>`
