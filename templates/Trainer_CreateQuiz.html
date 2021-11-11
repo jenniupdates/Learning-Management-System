@@ -48,8 +48,7 @@
                                             <li v-for="option in question.mcq_options">{{option}}</li>
                                         </ol>
                                         <ol v-else>
-                                            <li>True</li>
-                                            <li>False</li>
+                                            <li v-for="option in question.mcq_options">{{option}}</li>
                                         </ol>
                                     </td>
                                     <td>
@@ -174,6 +173,7 @@
                         curr_question["mcq_options"] = ['true', 'false']
                         this.question_list.push(curr_question)
                         document.getElementById('question_name').value = ""
+                        console.log("testing succesful question list")
                         console.log(this.question_list)
                     }
                     else {
