@@ -412,6 +412,18 @@ def approveEnrolment():
         val = (course_id,class_id,user_id)
         db.execute(sql,val)
 
+        sql = "SELECT count(*) FROM sections WHERE (Course_ID, Class_ID) = (%s,%s)"
+        val = (course_id, class_id)
+        result = db.fetch(sql, val)
+        section_count = result[0]['count(*)']
+        for i in range(section_count):
+            sql = "INSERT INTO engineer_course_section (Course_ID, Class_ID, User_ID, Section_ID, Section_Status) VALUES (%s,%s,%s,%s,%s)"
+            val = (course_id, class_id, user_id,i+1,"unavailable")
+            db.execute(sql, val)
+        sql = "UPDATE engineer_course_section SET section_status = 'incomplete' WHERE (Course_ID, Class_ID, User_ID, Section_ID) = (%s,%s,%s,%s)"
+        val = (course_id, class_id, user_id, '1')
+        db.execute(sql, val)
+
         return jsonify({
             "code": 200,
             "message": "User enrolment accepted! Refreshing the page in 2 seconds."
@@ -503,6 +515,8 @@ def engineer_enroll():
         sql = "UPDATE engineer_course_enrolment SET Course_Status = 'pending', Class_ID = %s WHERE Course_ID = %s AND Class_ID = 0 AND User_ID = %s"
         val = (class_id,course_id,user_id)
         db.execute(sql,val)
+        # put the user into the sections and mark all as unavailable with the first one being incomplete
+        # get the current length of sections
 
         return jsonify({
             "code": 200,
