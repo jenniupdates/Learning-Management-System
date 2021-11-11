@@ -201,8 +201,54 @@
                         }
                         let score_percent = no_correct / data['quiz_results'].length * 100
                         document.getElementById("result_percent").innerText = "Your Score: " + score_percent + "%"
-                        this.completeSection();
+                        if (this.quiz_id.search("Final") != -1){
+                            if(score_percent >= 50){
+                                console.log("Passed the final quiz.")
+                                let small = document.getElementById('small').innerText = "You have successfully passed the final quiz, you have now completed this course"
+                                
+                                this.completeCourse(score_percent);
+                            }
+                            else{
+                                console.log("Failed the final quiz.")
+                                // this.completeFinal
+                                let small = document.getElementById("small").innerText = "You failed the quiz, please try again. Need 50 % to complete the quiz."
+                            }
+                        }
+                        else {
+                            console.log("You have completed the current section and unlocked the next one")
+                            this.completeSection();
+                        }
+                        
                         document.getElementById("retakeQuiz").innerHTML = `<button type="button" class="btn btn-secondary" onclick='retakeQuiz()'>Retake Quiz</button>`
+                    }
+                },
+                completeCourse: async function(score_percent){
+                    let quiz_id_split = this.quiz_id.split("-")
+                    let course_id = quiz_id_split[0]
+                    let class_id = quiz_id_split[1]
+                    let section_id = quiz_id_split[2]
+                    console.log("checkroonies")
+                    console.log(this.user_id)
+                    console.log(score_percent)
+                    let url = "http://localhost:5000/engineer/completeCourse"
+                    const response = await fetch(url,
+                    {
+                        method: "POST",
+                        headers: {
+                           "Content-type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "course_id": course_id,
+                            "class_id": class_id,
+                            "user_id": this.user_id,
+                            "score": score_percent,
+                        })
+                    });
+                    if (!response.ok) {
+                        console.log("Error completing the course")
+                    }
+                    else {
+                        console.log("Course has been completed")
                     }
                 },
                 completeSection: async function() {

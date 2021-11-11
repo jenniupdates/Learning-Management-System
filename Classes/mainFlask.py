@@ -683,7 +683,20 @@ def withdrawFromCourse():
             "message": "Course withdrawn from successfully! Refreshing page in 3 seconds."
         })
 
+@app.route('/engineer/completeCourse', methods=['POST'])
+def completeCourse():
+    course_id = request.json.get('course_id')
+    class_id = request.json.get('class_id')
+    user_id = request.json.get('user_id')
+    score = str(request.json.get('score'))
 
+    sql = "UPDATE engineer_course_enrolment SET Course_Status = %s, Score = %s WHERE (Course_ID, Class_ID, User_ID) = (%s,%s,%s)"
+    val = ('completed', score, course_id, class_id, user_id)
+    db.execute(sql, val)
+    return jsonify({
+        "code": 200,
+        "message": "Completed course and final quiz successsfully"
+    })
 @app.route('/engineer/completeSection',methods=['POST'])
 def completeSection():
     course_id = request.json.get('course_id')
