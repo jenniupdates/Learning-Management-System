@@ -5,7 +5,9 @@
 <?php
     $course_id = $_GET['course_id'];
     $class_id = $_GET['class_id'];
-    $trainer_name =  $_GET['trainer_name'];
+    if (isset($_GET['trainer_name'])) {
+        $trainer_name =  $_GET['trainer_name'];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +59,10 @@
         </div>
         <div class v-else>
             <button type="button" class="btn btn-primary" v-on:click="createFinalQuiz">Create Final Quiz</button>
+        </div>
+        <br>
+        <div style ="text-align:center;">
+            <a href='Trainer_Homepage2.html'><button type="button" class="btn btn-info">Back to Homepage</button></a>
         </div>
     </div>
 </form>
@@ -115,7 +121,6 @@
                             course_material += `
                             <form action = "http://localhost:5000/uploader?ui=`+upload_id+`" method = "POST"
                             enctype = "multipart/form-data">
-                            <input typw='hisswn'
                             <input type = "file" name = "file"/> <input type = "submit"/>
                             `
                         
@@ -165,11 +170,11 @@
                 },
                 createFinalQuiz: async function(){
                     if (this.final_quiz_id.length > 0){
-                        window.location.replace("Trainer_CreateQuiz.html?quiz_id=" + this.final_quiz_id + "&status=edit")
+                        window.location.replace("Trainer_CreateQuiz.html?quiz_id=" + this.final_quiz_id + "&status=edit&trainer_name=" + app.trainer_name)
                     }
                     else{
                         this.final_quiz_id = this.course_id + "-" + this.class_id + "-" + "Final"
-                        window.location.replace("Trainer_CreateQuiz.html?quiz_id=" + this.final_quiz_id + "&status=create")
+                        window.location.replace("Trainer_CreateQuiz.html?quiz_id=" + this.final_quiz_id + "&status=create&trainer_name=" + app.trainer_name)
                     }
                     
                 },
@@ -198,7 +203,7 @@
         async function editQuiz(quiz_id){
             console.log("[START] of editing a quiz");
             console.log(quiz_id);
-            window.location.replace("Trainer_CreateQuiz.html?quiz_id=" + quiz_id + "&status=edit")
+            window.location.replace("Trainer_CreateQuiz.html?quiz_id=" + quiz_id + "&status=edit&trainer_name=" + app.trainer_name)
             // send the quiz_id to the trainer edit quiz sections
         }
 
@@ -206,7 +211,7 @@
             console.log("[START] of creating a quiz");
             let quiz_id = course_id + "-" + class_id + "-" + section_id
             console.log(quiz_id)
-            window.location.replace("Trainer_CreateQuiz.html?quiz_id=" + quiz_id + "&status=create")
+            window.location.replace("Trainer_CreateQuiz.html?quiz_id=" + quiz_id + "&status=create&trainer_name=" + app.trainer_name)
             // send the quiz i to the trainer create quiz html
         }
     </script>
