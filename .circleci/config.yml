@@ -9,6 +9,8 @@ jobs:
         environment:
           MYSQL_DATABASE: g3t4
           MYSQL_USER: root
+
+    steps:
       - checkout
 
       - run: 
