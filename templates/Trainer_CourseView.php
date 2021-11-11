@@ -66,12 +66,13 @@
             el: '#app',
             data: {
                 'sections': [],
-                'trainer_name': "Isaac",
-                'course_id': 'IS111',
-                'class_id': '1',
+                'trainer_name': '',
+                'course_id': '',
+                'class_id': '',
                 'name': '',
                 'last_id': 0,
-                'final_quiz_id': ''
+                'final_quiz_id': '',
+                'quiz_id': ''
             },
             methods: {
                 getAllSections: async function(){
@@ -149,8 +150,6 @@
                     let new_description = document.getElementById("new_description").value;
                     let last_id = this.last_id;
                     last_id++;
-                    console.log("This is the new quiz id");
-                    console.log(quiz_id);
                     // Update the database with the new section
                     let url = "http://localhost:5000/trainers/updateSections?section_id=" + last_id + "&description=" + encodeURI(new_description) + "&course_id=" + this.course_id + "&class_id=" + this.class_id;
                     const response = await fetch(url, {method: 'GET'});
