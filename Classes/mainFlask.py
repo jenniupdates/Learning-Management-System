@@ -847,6 +847,8 @@ def populateQuestions():
             for row2 in result2:
                 options.append(row2["Question_Option"])
             curr_qn["mcq_options"] = options
+        else:
+            curr_qn['mcq_options'] = ['true','false']
         question_list.append(curr_qn)
     return jsonify({
         "quiz_id": quiz_id,
