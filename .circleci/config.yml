@@ -37,7 +37,6 @@ jobs:
           name: Install MySQL CLI, Dependencies and Run Script
           command: |
             sudo apt-get install default-mysql-client
-            mysql -h 127.0.0.1 -u root -e "create database g3t4"
             mysql -h 127.0.0.1 -u root -e g3t4 < dbloadscript.sql            
           # mysql -h 127.0.0.1 -u root --execute="DROP DATABASE IF EXISTS `g3t4`"
           # mysql -h 127.0.0.1 -u root --execute="CREATE DATABASE `g3t4`"
