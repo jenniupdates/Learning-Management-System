@@ -2,7 +2,11 @@
 <!--Next, clicking view Course should bring the trainer to another page that allows them to edit the Sections-->
 <!--To edit a different Course, they will have to press a return to homepage button-->
 <!--Within each Section edit page, they should be able to add and delete Sections-->
-
+<?php
+    $course_id = $_GET['course_id'];
+    $class_id = $_GET['class_id'];
+    $trainer_name =  $_GET['trainer_name'];
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,6 +21,9 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   </head>
 <body>
+    <input type='hidden' id='course_id' value='<?=$course_id?>'>
+    <input type='hidden' id='class_id' value='<?=$class_id?>'>
+    <input type='hidden' id='trainer_name' value='<?=$trainer_name?>'>
 
     <div id="app">
         <h1 class="text-center">Course Sections</h1>
@@ -111,7 +118,7 @@
                             <input type = "file" name = "file"/> <input type = "submit"/>
                             `
                         
-                            // Create empty buttin in initialized section for creating quiz if empty 
+                            // Create empty button in initialized section for creating quiz if empty 
                             // and Edit Quiz button if there is already a quiz
                             if (section["quiz_id"] != null){
                                 quiz_button = `
@@ -168,7 +175,7 @@
                     
                 },
                 getFinalQuiz: async function(){
-                    let url = "http://localhost:5000//trainers/getFinalQuiz?course_id="+ this.course_id + "&class_id=" + this.class_id
+                    let url = "http://localhost:5000/trainers/getFinalQuiz?course_id="+ this.course_id + "&class_id=" + this.class_id
                     const response = await fetch(url, {method: 'GET'});
                     if(!response.ok){
                         console.log("Error in getting final quiz idn")
@@ -182,6 +189,9 @@
                 }
             },
             created: function() {
+                this.course_id = document.getElementById("course_id").value
+                this.class_id = document.getElementById("class_id").value
+                this.trainer_name = document.getElementById("trainer_name").value
                 this.getAllSections();
             }
         });

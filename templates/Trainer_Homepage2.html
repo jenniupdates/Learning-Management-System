@@ -18,10 +18,10 @@
   </head>
 <body>
 
-<div id="app">
+<div id="app" class="container">
   <h1 style ="text-align:center;">Courses</h1>
 
-  <h2>Trainer Name: {{trainer_name}}</h2>
+  <h2 style ="text-align:center;">Trainer Name: {{trainer_name}}</h2>
   <table class="table">
       <thead class="thead-dark">
         <tr>
@@ -45,7 +45,7 @@
       },
       methods: {
         getClassDetails: async function(){
-          let url = 'http://127.0.0.1:5000/trainers/getClassDetails?trainer_id=' + this.trainer_id
+          let url = 'http://localhost:5000/trainers/getClassDetails?trainer_id=' + this.trainer_id
           console.log(url)
           let tclass_list = document.getElementById("tclass_list")
           tclass_list.innerHTML = ''
@@ -57,18 +57,19 @@
             else {
               const data = await response.json();
               let tclass_list = document.getElementById("tclass_list")
-              console.log(data);
               for (tclass of data["courses"]){
-                console.log(tclass);
                 tclass_name = tclass['name']
+                tcourse_id = tclass_name.split(" - ")[0]
                 tclass_id = tclass['class']
                 tclass_capacity = tclass['capacity']
+                link = 'Trainer_CourseView.php?course_id=' + tcourse_id + '&class_id=' + tclass_id + '&trainer_name=' + this.trainer_name
+                console.log(link)
                 tclass_list.innerHTML += `
                   <tr>
                     <td>`+tclass_name+`</td>`+`
                     <td>`+tclass_id+`</td>`+`
-                    <td><button type="button" class="btn btn-warning">Edit Course</button></td>`+`
-                    <td>`+tclass_capacity+`
+                    <td><a href='`+link+`'><button type="button" class="btn btn-warning">Edit Class</button></a></td>`+`
+                    <td>`+tclass_capacity+`</td>
                   </tr>` 
               }
             }
@@ -78,7 +79,7 @@
           this.trainer_name = "None"
           let trainer_id = this.trainer_id
           if (trainer_id != ""){
-            let url = "http://127.0.0.1:5000/trainers/getTrainerName?trainer_id=" + trainer_id
+            let url = "http://localhost:5000/trainers/getTrainerName?trainer_id=" + trainer_id
             const response = await fetch(url, {method: "GET"});
 
             if(!response.ok){
@@ -92,8 +93,8 @@
         }
       },
       created: function() {
-        this.getClassDetails();
         this.updateTrainerName();
+        this.getClassDetails();
       }
     });
   </script>

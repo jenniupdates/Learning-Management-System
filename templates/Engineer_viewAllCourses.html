@@ -57,7 +57,8 @@
   var app = new Vue({
       el: '#app',
       data: {
-        "user_id": 1 // Hardcoded
+        "user_id": 1, // Hardcoded
+        "courses": []
       },
       methods: {  
         getAllCourses: async function() {
@@ -92,6 +93,7 @@
                 <td><button type="button" class="btn btn-success" onclick="enroll('`+course['course_id']+`')" `+disabled+`>Enroll</button></td>
               </tr>`
             }
+            this.courses = data['courses']
           }
         }
       },
