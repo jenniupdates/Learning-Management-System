@@ -260,7 +260,11 @@
                         }
                         else {
                             small.innerText = data['message']
-                            document.getElementById("nextSection").innerHTML = `<a href=''><button type="button" class="btn btn-warning">Take Final Quiz</button></a>`
+                            let quiz_id_list = this.quiz_id.split("-")
+                            let course_id = quiz_id_list[0]
+                            let class_id = quiz_id_list[1]
+                            final_quiz_id = course_id + "-" + class_id + "-Final"
+                            document.getElementById("nextSection").innerHTML = `<a href='Engineer_takeQuiz.php?quiz_id=`+final_quiz_id+`&user_id=`+this.user_id+`'><button type="button" class="btn btn-warning">Take Final Quiz</button></a>`
                         }
                     }
                 }
