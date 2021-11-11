@@ -137,13 +137,29 @@ def createQuiz():
     course_id = tmp[0]
     class_id = tmp[1]
     section_id = tmp[2]
-    sql2 = 'UPDATE sections SET quiz_id = %s WHERE (course_id, class_id, section_id) = (%s, %s, %s)'
-    val2 = (quiz_id, course_id, class_id, section_id)
-    db.execute(sql2, val2)
+    if section_id == 'Final':
+        sql3 = 'UPDATE course_class SET final_quiz_id = %s WHERE (course_id, class_id) = (%s, %s)'
+        val3 = (quiz_id, course_id, class_id)
+        db.execute(sql3, val3)
+    else:
+        sql2 = 'UPDATE sections SET quiz_id = %s WHERE (course_id, class_id, section_id) = (%s, %s, %s)'
+        val2 = (quiz_id, course_id, class_id, section_id)
+        db.execute(sql2, val2)
     return jsonify({
         "course_id" : course_id,
         "class_id" : class_id,
         "section_id" : section_id
+    })
+
+@app.route('/trainers/getFinalQuiz')
+def getFinalQuiz():
+    course_id = request.args.get('course_id')
+    class_id = request.args.get('class_id')
+    sql = 'SELECT final_quiz_id FROM course_class WHERE (Course_ID, Class_ID) = (%s,%s)'
+    val = (course_id, class_id)
+    result = db.fetch(sql, val)
+    return jsonify({
+        "final_quiz_id": result[0]["final_quiz_id"]
     })
 
 @app.route('/trainers/updateQuestions', methods=["POST"])
