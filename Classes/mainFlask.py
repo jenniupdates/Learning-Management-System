@@ -201,13 +201,13 @@ def updateQuestions():
     # insert into the question table in database
     for qn in question_list:
         # if question is true/false
-        if qn['question_type'] == 1:
+        if qn['question_type'] == 2:
             sql = "INSERT INTO question (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer)" + \
                 "VALUES (%s,%s,%s,%s,%s)"
             val = (quiz_id, qn['question_id'], qn['question'], qn['question_type'], qn['answer'])
             db.execute(sql, val)
         # if question type is MCQ
-        if qn['question_type'] == 2:
+        if qn['question_type'] == 1:
             sql = "INSERT INTO question (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer)" + \
                 "VALUES (%s,%s,%s,%s,%s)"
             val = (quiz_id, qn['question_id'], qn['question'], qn['question_type'], qn['answer'])
@@ -537,8 +537,6 @@ def engineer_enroll():
         sql = "UPDATE engineer_course_enrolment SET Course_Status = 'pending', Class_ID = %s WHERE Course_ID = %s AND Class_ID = 0 AND User_ID = %s"
         val = (class_id,course_id,user_id)
         db.execute(sql,val)
-        # put the user into the sections and mark all as unavailable with the first one being incomplete
-        # get the current length of sections
 
         return jsonify({
             "code": 200,
@@ -849,7 +847,7 @@ def populateQuestions():
         curr_qn["question"] = row["Question_Name"]
         curr_qn["question_type"] = row["Question_Type"]
         curr_qn["answer"] = row["Answer"]
-        if row["Question_Type"] == 2:
+        if row["Question_Type"] == 1:
             options = []
             sql2 = "SELECT * FROM mcq_options WHERE (Quiz_ID, Question_ID) = (%s,%s)"
             val2 = (quiz_id, row["Question_ID"])
