@@ -35,9 +35,7 @@ jobs:
       - run:
           name: Install MySQL CLI, Dependencies and Run Script
           command: |
-            pip install mysqlclient
-            pip install mysql-connector-python
-          # python setup.py
+            pip install default-mysql-client
             mysql -h 127.0.0.1 -u root g3t4 < dbloadscript.sql            
           # mysql -h 127.0.0.1 -u root --execute="DROP DATABASE IF EXISTS `g3t4`"
           # mysql -h 127.0.0.1 -u root --execute="CREATE DATABASE `g3t4`"
