@@ -145,7 +145,7 @@
                     console.log("This is the new quiz id");
                     console.log(quiz_id);
                     // Update the database with the new section
-                    let url = "http://127.0.0.1:5000/trainers/updateSections?section_id=" + last_id + "&description=" + encodeURI(new_description) + "&course_id=" + this.course_id + "&class_id=" + this.class_id;
+                    let url = "http://localhost:5000/trainers/updateSections?section_id=" + last_id + "&description=" + encodeURI(new_description) + "&course_id=" + this.course_id + "&class_id=" + this.class_id;
                     const response = await fetch(url, {method: 'GET'});
                     if(!response.ok){
                         console.log("Error in updating the database with new section")
@@ -168,7 +168,7 @@
                     
                 },
                 getFinalQuiz: async function(){
-                    let url = "http://192.168.1.7:5000//trainers/getFinalQuiz?course_id="+ this.course_id + "&class_id=" + this.class_id
+                    let url = "http://localhost:5000//trainers/getFinalQuiz?course_id="+ this.course_id + "&class_id=" + this.class_id
                     const response = await fetch(url, {method: 'GET'});
                     if(!response.ok){
                         console.log("Error in getting final quiz idn")
