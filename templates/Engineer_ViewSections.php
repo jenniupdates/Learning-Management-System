@@ -44,8 +44,13 @@ $class_id = $_GET['class_id'];
                 <tbody id="section_list">
 
                 </tbody>
+                <br>
+               
             </thead>
         </table>
+        <!--
+        <a href='Engineer_takeQuiz.php?quiz_id=`+final_quiz_id+`&user_id=`+this.user_id+`'><button type="button" class="btn btn-warning">Take Final Quiz</button></a>
+        -->
     </div>
 
 </form>
@@ -59,7 +64,8 @@ $class_id = $_GET['class_id'];
                 'course_id': 'Loading...',
                 'class_id': 'Loading...',
                 'user_name': 'Richard', // Hardcoded for demo
-                'user_id' : '1', // Hardcoded for Demo
+                'user_id' : '1', // Hardcoded for Demo,
+                'final_quiz_id': '',
                 'status_btn': {'completed': 'badge-success', 'incomplete': 'badge-warning', 'unavailable':'badge-secondary'}
             },
             methods: {
@@ -104,6 +110,7 @@ $class_id = $_GET['class_id'];
             created: function() {
                 this.course_id = document.getElementById("course_id").value;
                 this.class_id = document.getElementById("class_id").value;
+                this.final_quiz_id = this.course_id+"-"+this.class_id+"-"+"Final"
                 this.getAllSections();
             }
         });

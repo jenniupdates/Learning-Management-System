@@ -171,6 +171,7 @@
                         curr_question["question"] = question
                         curr_question["answer"] = answer
                         curr_question["question_type"] = question_type
+                        curr_question["mcq_options"] = ['true', 'false']
                         this.question_list.push(curr_question)
                         document.getElementById('question_name').value = ""
                         console.log(this.question_list)
@@ -248,6 +249,7 @@
                 },
 
                 updateQuestions: async function(){
+                    console.log("Where is this....")
                     console.log(this.question_list);
                     let url = 'http://localhost:5000/trainers/updateQuestions'
                     const response = await fetch(url, 
