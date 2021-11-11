@@ -24,7 +24,7 @@ $class_id = $_GET['class_id'];
 <body>
     <input type='hidden' id='course_id' value='<?=$course_id?>'>
     <input type='hidden' id='class_id' value='<?=$class_id?>'>
-    <div id="app">
+    <div id="app" class='container'>
         <h1 class="text-center">Course Sections</h1>
         <h2 class="font-weight-bold text-center">{{course_id}} - Class {{class_id}}</h2>
         <h3 class="text-center">{{user_name}}</h3>
