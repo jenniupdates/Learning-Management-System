@@ -76,6 +76,9 @@
                             <div class="col">
                                 <div id="retakeQuiz"></div>
                             </div>
+                            <div class="col">
+                                <div id="goBack"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,10 +202,15 @@
                             }
                             
                         }
+                        let quiz_id_split = this.quiz_id.split("-")
+                        let course_id = quiz_id_split[0]
+                        let class_id = quiz_id_split[1]
+                        let section_id = quiz_id_split[2]
                         let score_percent = no_correct / data['quiz_results'].length * 100
                         document.getElementById("result_percent").innerText = "Your Score: " + score_percent + "%"
                         this.completeSection();
                         document.getElementById("retakeQuiz").innerHTML = `<button type="button" class="btn btn-secondary" onclick='retakeQuiz()'>Retake Quiz</button>`
+                        document.getElementById("goBack").innerHTML = `<a href='Engineer_ViewSections.php?course_id=`+course_id+`&class_id=`+class_id+`'><button type="button" class="btn btn-warning">Back to Sections</button></a>`
                     }
                 },
                 completeSection: async function() {

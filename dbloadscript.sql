@@ -1,6 +1,7 @@
--- DROP DATABASE IF EXISTS `g3t4`;
--- CREATE DATABASE `g3t4`;
--- USE `g3t4`;
+DROP DATABASE IF EXISTS `g3t4`;
+CREATE DATABASE `g3t4`;
+USE `g3t4`;
+
 DROP TABLE IF EXISTS Users;
 CREATE TABLE Users (
 	User_ID int not null auto_increment,
@@ -67,9 +68,9 @@ CREATE TABLE Question (
     foreign key (Quiz_ID) references Quiz(Quiz_ID) on delete cascade on update cascade
 )engine=innoDB;
 
-INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-1', '1', 'What is x * y', '1', '1000'); -- changed to fit MCQ_Options
-INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-1', '2', 'printf(\"hihi\")', '1', 'hihi');
-INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-2', '1', 'WAD2ishard', '2', 'T');
+INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-1', '1', 'What is 1 + 999?', '1', '1000'); -- changed to fit MCQ_Options
+INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-1', '2', 'printf(\"hihi\"). What is the output?', '1', 'hihi');
+INSERT INTO `g3t4`.`question` (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer) VALUES ('IS111-1-2', '1', 'Web App is the fundamental.', '2', 'true');
 
 DROP TABLE IF EXISTS Course_Class;
 CREATE TABLE Course_Class (
@@ -135,8 +136,8 @@ INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES 
 INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-1', '2', 'hihi'); -- correct answer
 INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-1', '2', 'bibi');
 INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-1', '2', 'lili');
-INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-2', '1', 'T'); -- new line for testing
-INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-2', '1', 'F'); -- new line for testing
+INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-2', '1', 'true'); -- new line for testing
+INSERT INTO `g3t4`.`mcq_options` (Quiz_ID, Question_ID, Question_Option) VALUES ('IS111-1-2', '1', 'false'); -- new line for testing
 
 DROP TABLE IF EXISTS Engineer_Course_Enrolment;
 CREATE TABLE Engineer_Course_Enrolment (
@@ -150,14 +151,14 @@ CREATE TABLE Engineer_Course_Enrolment (
     foreign key (User_ID) references Users(User_ID) on delete cascade on update cascade
 )engine=innoDB;
 
-INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('ES102', '1', '1', 'completed');
-INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS111', '1', '1', 'completed');
-INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS216', '0', '1', 'eligible');
-INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS111', '1', '3', 'enrolled');
-INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('ES102', '1', '3', 'pending');
+INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('ES102', '0', '1', 'eligible');
+INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS111', '0', '1', 'eligible');
+INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS216', '0', '1', 'ineligible');
+INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS111', '0', '3', 'eligible');
+INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('ES102', '0', '3', 'eligible');
 INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS216', '0', '3', 'ineligible');
 INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS111', '0', '6', 'eligible');
-INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('ES102', '2', '6', 'pending');
+INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('ES102', '0', '6', 'eligible');
 INSERT INTO `g3t4`.`engineer_course_enrolment` (Course_ID, Class_ID, User_ID, Course_Status) VALUES ('IS216', '0', '6', 'ineligible');
 
 
@@ -174,8 +175,6 @@ CREATE TABLE Engineer_Course_Section (
     foreign key (Course_ID, Class_ID, Section_ID) references Sections (Course_ID, Class_ID, Section_ID) on delete cascade on update cascade
 )engine=innoDB;
 
-INSERT INTO `g3t4`.`engineer_course_section` (Course_ID, Class_ID, User_ID, Section_ID, Section_Status) VALUES ('IS111', '1', '1', '1', 'incomplete');
-INSERT INTO `g3t4`.`engineer_course_section` (Course_ID, Class_ID, User_ID, Section_ID, Section_Status) VALUES ('IS111', '1', '1', '2', 'unavailable');
 
 DROP TABLE IF EXISTS Quiz_User;
 CREATE TABLE Quiz_User (
@@ -189,7 +188,6 @@ CREATE TABLE Quiz_User (
     -- foreign key (User_ID) references User (User_ID) -- changed to Engineer_Course_Section (User_ID) also doesnt work
 )engine=innoDB;
 
-INSERT INTO `g3t4`.`Quiz_User` (Quiz_ID, Question_ID, User_ID, User_Answer) VALUES ('IS111-1-1', '1', '1', '3');
 
 DROP TABLE IF EXISTS Thread;
 CREATE TABLE Thread (

@@ -48,6 +48,7 @@
       <tbody id="uclass_list_completed">
       </tbody>
     </table> <br>
+    <div id='message'></div>
     <h3 style ="text-align:center;">Courses Pending Enrolment</h3>
   <table class="table">
       <thead class="thead-dark">
@@ -179,10 +180,14 @@
       }
       else {
         const data = await response.json()
-        console.log(data["message"])
+        let message = document.getElementById("message")
+        message.innerHTML = `
+        <div class="alert alert-warning" role="alert">
+          `+data['message']+`
+        </div>`
         setTimeout(function(){
           window.location.replace("Engineer_HomePage.html");
-        }, 4000)
+        }, 3000)
       }
     }
 

@@ -71,7 +71,7 @@
             <div class="row">
                 <div class="col">
                     <div class="jumbotron">
-                        <p>To move on, you need to take the quiz and get it 100% correct.</p>
+                        <p>To move on, you need to take the quiz.</p>
                         <a :href='takeQuiz_link'><button id='startQuizBtn' type="button" class="btn btn-primary">Start Quiz</button></a>
                     </div>
                 </div>
