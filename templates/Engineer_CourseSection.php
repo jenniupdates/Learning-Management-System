@@ -83,9 +83,9 @@
         var app = new Vue({
             el: '#app',
             data: {
-                "course_id": 'IS111', // Need to implement this dynamically
-                "class_id": 1, // Need to implement this dynamically
-                "section_id": 1, // Need to implement this dynamically
+                "course_id": '',
+                "class_id": '', 
+                "section_id": '', 
                 "takeQuiz_link": 'Engineer_takeQuiz.php?quiz_id=',
                 "user_id": 1 // Hardcoded
             },
@@ -107,6 +107,26 @@
                     else {
                         const data = await response.json()
                         this.takeQuiz_link += data['quiz_id'] + "&user_id=" + this.user_id
+                        this.getCourseMaterials();
+                    }
+                },
+                getCourseMaterials: async function() {
+                    let url = "http://localhost:5000/engineer/getCourseMaterials?course_id=" + this.course_id + "&class_id=" + this.class_id + "&section_id=" + this.section_id
+                    const response = await fetch(url,{method: "GET"})
+                    if (!response.ok) {
+                        console.log("Error getting course materials")
+                    }
+                    else {
+                        const data = await response.json()
+                        let course_materials_ul = document.getElementById("course_materials")
+                        console.log(data)
+                        for (cm of data['course_materials']) {
+                            console.log(course_materials_ul)
+                            course_materials_ul.innerHTML += `<li>
+                                        <a href='http://localhost:5000/download?di=`+cm['material_id']+`&name=`+cm['material_name']+`'>`+cm['material_name']+`</a>
+                                    </li>`
+                        }
+
                     }
                 }
             },
@@ -114,7 +134,6 @@
                 this.course_id = document.getElementById("course_id").value;
                 this.class_id = document.getElementById("class_id").value;
                 this.section_id = document.getElementById("section_id").value;
-
                 this.getQuizID();
             }
         });
