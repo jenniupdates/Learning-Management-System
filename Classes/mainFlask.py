@@ -200,23 +200,15 @@ def updateQuestions():
     db.execute(sql, val)
     # insert into the question table in database
     for qn in question_list:
-        # if question is true/false
-        if qn['question_type'] == 2:
-            sql = "INSERT INTO question (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer)" + \
+        sql = "INSERT INTO question (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer)" + \
                 "VALUES (%s,%s,%s,%s,%s)"
-            val = (quiz_id, qn['question_id'], qn['question'], qn['question_type'], qn['answer'])
+        val = (quiz_id, qn['question_id'], qn['question'], qn['question_type'], qn['answer'])
+        db.execute(sql, val)
+        for option in qn['mcq_options']:
+            sql = "INSERT INTO mcq_options (Quiz_ID, Question_ID, Question_Option)" + \
+                "VALUES (%s, %s, %s)"
+            val = (quiz_id, qn['question_id'], option)
             db.execute(sql, val)
-        # if question type is MCQ
-        if qn['question_type'] == 1:
-            sql = "INSERT INTO question (Quiz_ID, Question_ID, Question_Name, Question_Type, Answer)" + \
-                "VALUES (%s,%s,%s,%s,%s)"
-            val = (quiz_id, qn['question_id'], qn['question'], qn['question_type'], qn['answer'])
-            db.execute(sql, val)
-            for option in qn['mcq_options']:
-                sql = "INSERT INTO mcq_options (Quiz_ID, Question_ID, Question_Option)" + \
-                    "VALUES (%s, %s, %s)"
-                val = (quiz_id, qn['question_id'], option)
-                db.execute(sql, val)
 
     return jsonify({
         "quiz_id": quiz_id,
@@ -855,6 +847,8 @@ def populateQuestions():
             for row2 in result2:
                 options.append(row2["Question_Option"])
             curr_qn["mcq_options"] = options
+        else:
+            curr_qn['mcq_options'] = ['true','false']
         question_list.append(curr_qn)
     return jsonify({
         "quiz_id": quiz_id,
