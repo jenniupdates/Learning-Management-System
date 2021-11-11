@@ -48,8 +48,12 @@ $class_id = $_GET['class_id'];
                
             </thead>
         </table>
+
+        <div style ="text-align:center;">
+            <a href='Engineer_HomePage.html'><button type="button" class="btn btn-info">Back to My Courses</button></a>
+        </div>
         
-        <a v-bind:href="final_url"><button type="button" class="btn btn-warning">Take Final Quiz</button></a>
+        <!-- <a v-bind:href="final_url"><button type="button" class="btn btn-warning">Take Final Quiz</button></a> -->
         
     </div>
 
