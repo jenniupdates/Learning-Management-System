@@ -3,13 +3,15 @@ import pymysql
 class DBHelper:
 
     def __init__(self):
-        self.host = "localhost"
+        self.host = "aws-rds.cr68ewwvuica.us-east-2.rds.amazonaws.com"
         self.user = "root"
-        self.password = ""
+        self.password = "myrootpw"
         self.db = "g3t4"
+        self.port = 3306
 
     def __connect__(self):
-        self.con = pymysql.connect(host=self.host, user=self.user, password=self.password, db=self.db, cursorclass=pymysql.cursors.
+        self.con = pymysql.connect(host=self.host, user=self.user, password=self.password, 
+                                    db=self.db, port=self.port, cursorclass=pymysql.cursors.
                                    DictCursor)
         self.cur = self.con.cursor()
 
