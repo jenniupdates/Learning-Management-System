@@ -44,7 +44,7 @@
     </div>
     </nav>
   <!-- END OF NAV BAR -->
-    <div class="container">
+    <div class="container" style="padding-top: 30px;">
         <div class="row">
                 <div class="col">
                     <div class="jumbotron">
