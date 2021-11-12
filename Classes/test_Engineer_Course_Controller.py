@@ -15,13 +15,15 @@ class testEngineerCourseController(unittest.TestCase):
 
     # need to edit the test case data
     def test(self):
-        engineer_course_enrolment = self.ecc.getEngineerCourseEnrolment("IS111",1,1)
+        engineer_course_enrolment = self.ecc.getEngineerCourseEnrolment("IS217",1,1)
         oldenrolment = engineer_course_enrolment.getCourseStatus()
         self.assertNotEqual(oldenrolment, None)
            
-        engineer_course_section = self.ecc.getEngineerCourseSection("IS111",1,1,1)
+        engineer_course_section = self.ecc.getEngineerCourseSection("IS111",1,1,2)
         oldsection = engineer_course_section.getSectionStatus()
         self.assertNotEqual(oldsection, None)
+
+
 
         # current_section = self.ecc.getEngineerCourseSection("IS111",1,1,1)
         # new_section = self.ecc.getEngineerCourseSection("IS111",1,1,2)
