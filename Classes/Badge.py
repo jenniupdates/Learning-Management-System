@@ -1,3 +1,5 @@
+# Stephen Pang Qing Yang
+
 class Badge:
     def __init__(self,uid,cid,binfo):
         self.user_id = uid

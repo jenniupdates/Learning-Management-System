@@ -1,3 +1,5 @@
+# Richard Goh Jiangwei
+
 class Course:
     
     def __init__(self, course_id, course_name, course_outline):

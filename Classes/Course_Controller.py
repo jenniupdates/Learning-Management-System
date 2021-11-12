@@ -1,3 +1,5 @@
+# Richard Goh Jiangwei
+
 from Course import Course
 from Database import DBHelper
 from Course_Class import Course_Class

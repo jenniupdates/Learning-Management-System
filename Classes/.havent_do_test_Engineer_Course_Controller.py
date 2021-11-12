@@ -1,3 +1,6 @@
+# Lim Yin Shan
+
+
 # To test if DB control works, Add the following rows into SQL
 # INSERT INTO course_eligibility VALUES (1,1,'Ineligible')
 # INSERT into quiz VALUES (5,60);

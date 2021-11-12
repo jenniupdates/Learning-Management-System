@@ -44,19 +44,19 @@ class Engineer_Course_Controller:
     #     course_eligibility = Course_Eligibility(result[0]['Course_ID'],result[0]['User_ID'],result[0]['Eligibility'])
     #     return course_eligibility
 
-    def accessNextSection(self,current_Engineer_Course_Section):
-        if (current_Engineer_Course_Section.getSectionStatus() == 'completed'):
-            next_section_id = current_Engineer_Course_Section.getSectionID() + 1
-            # First check if section with that ID exists
-            sql = "SELECT * FROM sections WHERE Course_ID = %s AND Class_ID = %s AND Section_ID = %s"
-            val = (current_Engineer_Course_Section.getCourseID(),current_Engineer_Course_Section.getClassID(),next_section_id)
-            result = self.db.fetch(sql,val)
-            if len(result) > 0:
-                # Next section exists, now edit it as available
-                sql = "UPDATE engineer_course_section SET Section_Status = 'available' WHERE Course_ID = %s AND Class_ID = %s AND User_ID = %s AND Section_ID = %s"
-                val = (current_Engineer_Course_Section.getCourseID(),current_Engineer_Course_Section.getClassID(),current_Engineer_Course_Section.getUserID(),next_section_id)
-                self.db.execute(sql,val)
-                self.db.con.commit()
+    # def accessNextSection(self,current_Engineer_Course_Section):
+    #     if (current_Engineer_Course_Section.getSectionStatus() == 'completed'):
+    #         next_section_id = current_Engineer_Course_Section.getSectionID() + 1
+    #         # First check if section with that ID exists
+    #         sql = "SELECT * FROM sections WHERE Course_ID = %s AND Class_ID = %s AND Section_ID = %s"
+    #         val = (current_Engineer_Course_Section.getCourseID(),current_Engineer_Course_Section.getClassID(),next_section_id)
+    #         result = self.db.fetch(sql,val)
+    #         if len(result) > 0:
+    #             # Next section exists, now edit it as available
+    #             sql = "UPDATE engineer_course_section SET Section_Status = 'available' WHERE Course_ID = %s AND Class_ID = %s AND User_ID = %s AND Section_ID = %s"
+    #             val = (current_Engineer_Course_Section.getCourseID(),current_Engineer_Course_Section.getClassID(),current_Engineer_Course_Section.getUserID(),next_section_id)
+    #             self.db.execute(sql,val)
+    #             self.db.con.commit()
 
     def completeCourse(self,Engineer_Course):
         if Engineer_Course.getCourseStatus() == "Enrolled":

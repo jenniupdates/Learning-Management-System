@@ -1,3 +1,5 @@
+# Stephen Pang Qing Yang
+
 from Database import DBHelper
 
 class Engineer_Course_Section:

@@ -1,3 +1,5 @@
+# Lim Yin Shan
+
 class Section:
     # Course_ID, Class_ID, Section_ID, Description, Quiz_ID, Course_Material
     def __init(self, course_id, class_id, section_id, description, quiz_id):

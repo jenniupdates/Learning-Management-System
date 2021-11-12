@@ -1,3 +1,5 @@
+# Richard Goh Jiangwei
+
 class Course_Class:
     def __init__(self, course_id, class_id, trainer_id, class_start, class_end, size_limit, reg_start, reg_end, final_quiz_id):
         self.__cid = course_id

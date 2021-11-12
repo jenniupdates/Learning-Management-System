@@ -1,3 +1,5 @@
+# Richard Goh Jiangwei
+
 import unittest
 from Course import Course
 
