@@ -110,7 +110,7 @@ def upload_file():
         f = request.files['file']
         file_name = f.filename
         file_data = f.read()
-        sql = "INSERT INTO Section_Course_Materials VALUES (%s,%s,%s,%s,%s)"
+        sql = "INSERT INTO section_course_materials VALUES (%s,%s,%s,%s,%s)"
         val = (upload_id_list[0],upload_id_list[1],upload_id_list[2],file_name,file_data)
         db.execute(sql,val)
         print("url-------",url)
@@ -141,7 +141,7 @@ def download():
     download_id = request.args.get('di')
     file_name = request.args.get('name')
     download_id_list = download_id.split("-")
-    sql = "SELECT * FROM Section_Course_Materials WHERE Course_ID = %s AND Class_ID = %s AND Section_ID = %s"
+    sql = "SELECT * FROM section_course_materials WHERE Course_ID = %s AND Class_ID = %s AND Section_ID = %s"
     val = (download_id_list[0],download_id_list[1],download_id_list[2])
     result = db.fetch(sql,val)
     first_file = result[0]
