@@ -13,6 +13,7 @@ jobs:
           name: Install Python, Flask and other Dependencies
           # echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
           command: |
+            cd Classes
             pip install -r requirements.txt
 
 
