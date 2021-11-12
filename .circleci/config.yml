@@ -8,10 +8,10 @@ jobs:
       - image: circleci/mysql:8.0.4
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_ROOT_PASSWORD: rootpw
           MYSQL_DATABASE: g3t4
           MYSQL_USER: root
-          MYSQL_PASSWORD: ''
+          MYSQL_PASSWORD: pw
 
     steps:
       - checkout
@@ -37,7 +37,7 @@ jobs:
           name: Install MySQL CLI, Dependencies and Run Script
           command: |
             sudo apt-get install default-mysql-client
-            mysql -h 127.0.0.1 -u user -P g3t4 < dbloadscript.sql
+            mysql -h 127.0.0.1 -u user -pw g3t4 < dbloadscript.sql
 
       - run:
           name: Testing
