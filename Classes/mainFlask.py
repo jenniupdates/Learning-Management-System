@@ -307,6 +307,19 @@ def enrolLearner():
         sql = "UPDATE engineer_course_enrolment SET Class_ID = %s, Course_Status = 'enrolled' WHERE Course_ID = %s AND User_ID = %s"
         val = (class_id,course_id,user_id)
         db.execute(sql,val)
+        
+        sql = "SELECT count(*) FROM sections WHERE (Course_ID, Class_ID) = (%s,%s)"
+        val = (course_id, class_id)
+        result = db.fetch(sql, val)
+        section_count = result[0]['count(*)']
+        for i in range(section_count):
+            sql = "INSERT INTO engineer_course_section (Course_ID, Class_ID, User_ID, Section_ID, Section_Status) VALUES (%s,%s,%s,%s,%s)"
+            val = (course_id, class_id, user_id,i+1,"unavailable")
+            db.execute(sql, val)
+        sql = "UPDATE engineer_course_section SET section_status = 'incomplete' WHERE (Course_ID, Class_ID, User_ID, Section_ID) = (%s,%s,%s,%s)"
+        val = (course_id, class_id, user_id, '1')
+        db.execute(sql, val)
+        
         return jsonify({
             "code": 200,
             "message": "Successfully enrolled, refreshing the page in 2 seconds."
