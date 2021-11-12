@@ -13,6 +13,7 @@ class testEngineerCourseController(unittest.TestCase):
         self.ecc = Engineer_Course_Controller()
         # self.ec = Engineer_Course(1, "IS111", 1, "Enrolled", 70)
 
+    # need to edit the test case data
     def test(self):
         engineer_course_enrolment = self.ecc.getEngineerCourseEnrolment("IS111",1,1)
         oldenrolment = engineer_course_enrolment.getCourseStatus()
