@@ -97,7 +97,7 @@ $class_id = $_GET['class_id'];
             },
             methods: {
                 getAllSections: async function(){
-                    let url = 'http://localhost:5000/users/getClassSections?user_id=' + this.user_id + '&course_id=' + this.course_id + '&class_id=' + this.class_id
+                    let url = 'http://3.23.147.209:5000/users/getClassSections?user_id=' + this.user_id + '&course_id=' + this.course_id + '&class_id=' + this.class_id
                     console.log(url)
                     const response = await fetch(url, {method: 'GET'});
                     if(!response.ok){

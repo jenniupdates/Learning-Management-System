@@ -111,7 +111,7 @@
       },
       methods: { 
         getCoursePrerequisites: async function() {
-          let url = 'http://localhost:5000/getCoursePrerequisites';
+          let url = 'http://3.23.147.209:5000/getCoursePrerequisites';
           const response = await fetch(url,{method: "GET"});
           if (!response.ok) {
             console.log("Error calling getCoursePrerequisites")
@@ -123,7 +123,7 @@
           }
         },
         getAllCourses: async function() {
-          let url = 'http://localhost:5000/engineer/getAllCourses?user_id=' + this.user_id
+          let url = 'http://3.23.147.209:5000/engineer/getAllCourses?user_id=' + this.user_id
           const response = await fetch(url,{method: "GET"})
           if (!response.ok) {
             console.log("Error calling getAllCourses")
@@ -180,7 +180,7 @@
     let tr = document.getElementById(course_id)
     let select = tr.getElementsByTagName("select")[0]
     let class_id = select.value
-    let url = 'http://localhost:5000/engineer/enroll?user_id=' + app.user_id + '&course_id=' + course_id + '&class_id=' + class_id 
+    let url = 'http://3.23.147.209:5000/engineer/enroll?user_id=' + app.user_id + '&course_id=' + course_id + '&class_id=' + class_id 
     console.log(url)
     const response = await fetch(url,{method: "GET"})
     if (!response.ok) {

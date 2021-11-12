@@ -254,7 +254,7 @@
                         console.log(this.status)
                         console.log(this.quiz_id)
                         console.log(this.time_limit)
-                        let url = 'http://localhost:5000/trainers/createQuiz?quiz_id=' + this.quiz_id + '&time_limit=' + this.time_limit;
+                        let url = 'http://3.23.147.209:5000/trainers/createQuiz?quiz_id=' + this.quiz_id + '&time_limit=' + this.time_limit;
                         const response = await fetch(url, {method: 'GET'});
                         if(!response.ok){
                             console.log("Error in creating new quiz")
@@ -283,7 +283,7 @@
                 updateQuestions: async function(){
                     console.log("Where is this....")
                     console.log(this.question_list);
-                    let url = 'http://localhost:5000/trainers/updateQuestions'
+                    let url = 'http://3.23.147.209:5000/trainers/updateQuestions'
                     const response = await fetch(url, 
                     {
                     method: "POST",
@@ -308,7 +308,7 @@
                 },
 
                 populateQuestions: async function(){
-                    let url = 'http://localhost:5000/trainers/populateQuestions?quiz_id=' + this.quiz_id
+                    let url = 'http://3.23.147.209:5000/trainers/populateQuestions?quiz_id=' + this.quiz_id
                     console.log(url)
                     const response = await fetch(url, {method: 'GET'});
                     if(!response.ok){

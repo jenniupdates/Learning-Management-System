@@ -90,7 +90,7 @@
           },
           methods: {
             getAllPendingEnrolment: async function() {
-              let url = "http://localhost:5000/getAllPendingEnrolment"
+              let url = "http://3.23.147.209:5000/getAllPendingEnrolment"
               const response = await fetch(url, {method: 'GET'});
 
               if (!response.ok) {
@@ -137,7 +137,7 @@
         //console.log(user_id)
         //console.log(course_id)
         //console.log(class_id)
-        let url = "http://localhost:5000/hr/approveEnrolment"
+        let url = "http://3.23.147.209:5000/hr/approveEnrolment"
         const response = await fetch(url, 
           {
             method: "PUT", 
@@ -184,7 +184,7 @@
         //console.log(user_id)
         //console.log(course_id)
         //console.log(class_id)
-        let url = "http://localhost:5000/hr/rejectEnrolment"
+        let url = "http://3.23.147.209:5000/hr/rejectEnrolment"
         const response = await fetch(url, 
           {
             method: "PUT", 

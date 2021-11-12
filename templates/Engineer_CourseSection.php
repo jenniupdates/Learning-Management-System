@@ -76,7 +76,7 @@
             },
             methods: {
                 getQuizID: async function() {
-                    let url = 'http://localhost:5000/getSectionQuizID'
+                    let url = 'http://3.23.147.209:5000/getSectionQuizID'
                     const response = await fetch(url,
                     {
                         method: "POST",
@@ -96,7 +96,7 @@
                     }
                 },
                 getCourseMaterials: async function() {
-                    let url = "http://localhost:5000/engineer/getCourseMaterials?course_id=" + this.course_id + "&class_id=" + this.class_id + "&section_id=" + this.section_id
+                    let url = "http://3.23.147.209:5000/engineer/getCourseMaterials?course_id=" + this.course_id + "&class_id=" + this.class_id + "&section_id=" + this.section_id
                     const response = await fetch(url,{method: "GET"})
                     if (!response.ok) {
                         console.log("Error getting course materials")
@@ -108,7 +108,7 @@
                         for (cm of data['course_materials']) {
                             console.log(course_materials_ul)
                             course_materials_ul.innerHTML += `<li>
-                                        <a href='http://localhost:5000/download?di=`+cm['material_id']+`&name=`+cm['material_name']+`'>`+cm['material_name']+`</a>
+                                        <a href='http://3.23.147.209:5000/download?di=`+cm['material_id']+`&name=`+cm['material_name']+`'>`+cm['material_name']+`</a>
                                     </li>`
                         }
 

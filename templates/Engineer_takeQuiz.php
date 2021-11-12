@@ -83,7 +83,7 @@
             },
             methods: {
                 getQuizQuestionsAndOptions: async function() {
-                    let url = 'http://localhost:5000/getQuestionsAndOptions/' + this.quiz_id
+                    let url = 'http://3.23.147.209:5000/getQuestionsAndOptions/' + this.quiz_id
                     const response = await fetch(url, {method: 'GET'});
                     if (!response.ok) {
                         console.log("Error retrieving Quiz Questions & Options");
@@ -150,7 +150,7 @@
                         quiz_answers.push(question_obj)
                         
                     }
-                    let url = 'http://localhost:5000/gradeQuiz'
+                    let url = 'http://3.23.147.209:5000/gradeQuiz'
                     const response = await fetch(url,
                     {
                         method: "POST",
@@ -220,10 +220,7 @@
                     let course_id = quiz_id_split[0]
                     let class_id = quiz_id_split[1]
                     let section_id = quiz_id_split[2]
-                    console.log("checkroonies")
-                    console.log(this.user_id)
-                    console.log(score_percent)
-                    let url = "http://localhost:5000/engineer/completeCourse"
+                    let url = "http://3.23.147.209:5000/engineer/completeCourse"
                     const response = await fetch(url,
                     {
                         method: "POST",
@@ -249,7 +246,7 @@
                     let course_id = quiz_id_split[0]
                     let class_id = quiz_id_split[1]
                     let section_id = quiz_id_split[2]
-                    let url = "http://localhost:5000/engineer/completeSection"
+                    let url = "http://3.23.147.209:5000/engineer/completeSection"
                     const response = await fetch(url,
                     {
                         method: "POST",
@@ -272,7 +269,7 @@
                     
                 },
                 makeNextSectionAvl: async function(course_id,class_id,cur_section_id,user_id) {
-                    let url = 'http://localhost:5000/engineer/makeNextSectionAvl'
+                    let url = 'http://3.23.147.209:5000/engineer/makeNextSectionAvl'
                     let small = document.getElementById("small")
                     const response = await fetch(url,
                     {

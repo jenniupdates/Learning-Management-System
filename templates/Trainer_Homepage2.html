@@ -68,7 +68,7 @@
       },
       methods: {
         getClassDetails: async function(){
-          let url = 'http://localhost:5000/trainers/getClassDetails?trainer_id=' + this.trainer_id
+          let url = 'http://3.23.147.209:5000/trainers/getClassDetails?trainer_id=' + this.trainer_id
           console.log(url)
           let tclass_list = document.getElementById("tclass_list")
           tclass_list.innerHTML = ''
@@ -102,7 +102,7 @@
           this.trainer_name = "None"
           let trainer_id = this.trainer_id
           if (trainer_id != ""){
-            let url = "http://localhost:5000/trainers/getTrainerName?trainer_id=" + trainer_id
+            let url = "http://3.23.147.209:5000/trainers/getTrainerName?trainer_id=" + trainer_id
             const response = await fetch(url, {method: "GET"});
 
             if(!response.ok){

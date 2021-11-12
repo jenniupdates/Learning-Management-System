@@ -92,7 +92,7 @@
         },
         methods: {
             getTrainers: async function() {
-                let url = 'http://localhost:5000/HR/getTrainers'
+                let url = 'http://3.23.147.209:5000/HR/getTrainers'
                 const response = await fetch(url,{method: 'GET'});
 
                 if (!response.ok) {
@@ -106,7 +106,7 @@
                 }
             },
             getTrainerlessClasses: async function() {
-                let url = 'http://localhost:5000/HR/getTrainerlessClasses'
+                let url = 'http://3.23.147.209:5000/HR/getTrainerlessClasses'
                 const response = await fetch(url,{method: 'GET'});
 
                 if (!response.ok) {
@@ -152,7 +152,7 @@
         let course_id = course_class_id_list[0]
         let class_id = course_class_id_list[1]
         
-        let url = "http://localhost:5000/HR/assignTrainer"
+        let url = "http://3.23.147.209:5000/HR/assignTrainer"
         const response = await fetch(url,
                     {
                         method: "PUT",

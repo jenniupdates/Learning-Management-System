@@ -110,7 +110,7 @@
                     let class_id = this.class_id
                     let course_id = this.course_id
                     let last_id = this.last_id
-                    let url = 'http://localhost:5000/trainers/getAllSections?course_id=' + course_id + '&class_id=' + class_id
+                    let url = 'http://3.23.147.209:5000/trainers/getAllSections?course_id=' + course_id + '&class_id=' + class_id
                     let section_list = document.getElementById('section_list')
                     section_list.innerHTML = ''
                     const response = await fetch(url, {method: 'GET'});
@@ -131,7 +131,7 @@
                                 course_material = `<ul>`
                                 for (material of section['course_materials']) {
                                     course_material += `<li>
-                                        <a href='http://localhost:5000/download?di=`+material['material_id']+`&name=`+material['name']+`'>`+material['name']+`</a>
+                                        <a href='http://3.23.147.209:5000/download?di=`+material['material_id']+`&name=`+material['name']+`'>`+material['name']+`</a>
                                     </li>`
                                 }
                                 course_material += `
@@ -139,7 +139,7 @@
                             }
 
                             course_material += `
-                            <form action = "http://localhost:5000/uploader?ui=`+upload_id+`&class_id=`+this.class_id+`&trainer_name=`+this.trainer_name+`&url='`+this.page_url+`'" method = "POST"
+                            <form action = "http://3.23.147.209:5000/uploader?ui=`+upload_id+`&class_id=`+this.class_id+`&trainer_name=`+this.trainer_name+`&url='`+this.page_url+`'" method = "POST"
                             enctype = "multipart/form-data">
                             <input type = "file" name = "file"/> <input type = "submit"/>
                             `
@@ -176,7 +176,7 @@
                     let last_id = this.last_id;
                     last_id++;
                     // Update the database with the new section
-                    let url = "http://localhost:5000/trainers/updateSections?section_id=" + last_id + "&description=" + encodeURI(new_description) + "&course_id=" + this.course_id + "&class_id=" + this.class_id;
+                    let url = "http://3.23.147.209:5000/trainers/updateSections?section_id=" + last_id + "&description=" + encodeURI(new_description) + "&course_id=" + this.course_id + "&class_id=" + this.class_id;
                     const response = await fetch(url, {method: 'GET'});
                     if(!response.ok){
                         console.log("Error in updating the database with new section")
@@ -199,7 +199,7 @@
                     
                 },
                 getFinalQuiz: async function(){
-                    let url = "http://localhost:5000/trainers/getFinalQuiz?course_id="+ this.course_id + "&class_id=" + this.class_id
+                    let url = "http://3.23.147.209:5000/trainers/getFinalQuiz?course_id="+ this.course_id + "&class_id=" + this.class_id
                     const response = await fetch(url, {method: 'GET'});
                     if(!response.ok){
                         console.log("Error in getting final quiz idn")

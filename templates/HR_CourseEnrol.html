@@ -112,7 +112,7 @@
           },
           methods: {
               loadAllCourses: async function() {
-                  let url = 'http://localhost:5000/loadAllCourses'
+                  let url = 'http://3.23.147.209:5000/loadAllCourses'
                   const response = await fetch(url,{method: 'GET'});
 
                   if (!response.ok) {
@@ -148,7 +148,7 @@
                 }
               },
               getClasses: async function() {
-                let url = 'http://localhost:5000/getAllClasses/' + this.selected_course_id
+                let url = 'http://3.23.147.209:5000/getAllClasses/' + this.selected_course_id
                 let class_list = document.getElementById("class_list")
                 class_list.innerHTML = ""
                 const response = await fetch(url,{method: 'GET'});
@@ -178,7 +178,7 @@
               getCurCapacity: async function() {
                 let class_id = this.selected_class
                 let course_id = this.selected_course_id
-                let url = 'http://localhost:5000/HR/getCurCapacity?class_id=' + class_id + '&course_id=' + course_id
+                let url = 'http://3.23.147.209:5000/HR/getCurCapacity?class_id=' + class_id + '&course_id=' + course_id
                 const response = await fetch(url,{method: 'GET'});
                 if (!response.ok) {
                   console.log("Error in retrieving Max Capacity")
@@ -193,7 +193,7 @@
               getMaxCapacity: async function() {
                 let class_id = this.selected_class
                 let course_id = this.selected_course_id
-                let url = 'http://localhost:5000/HR/getMaxCapacity?class_id=' + class_id + '&course_id=' + course_id
+                let url = 'http://3.23.147.209:5000/HR/getMaxCapacity?class_id=' + class_id + '&course_id=' + course_id
                 const response = await fetch(url,{method: 'GET'});
 
                   if (!response.ok) {
@@ -211,7 +211,7 @@
                 let class_id = this.selected_class
                 let course_id = this.selected_course_id
                 if (class_id != "") {
-                  let url = "http://localhost:5000/users/getTrainerName?class_id=" + class_id + "&course_id=" + course_id
+                  let url = "http://3.23.147.209:5000/users/getTrainerName?class_id=" + class_id + "&course_id=" + course_id
                   const response = await fetch(url,{method: 'GET'});
                   
                   if(!response.ok) {
@@ -229,7 +229,7 @@
               updateEngineerEli: async function() {
                 let learners = document.getElementById("learners")
                 learners.innerHTML = ""
-                let url = "http://localhost:5000/getUsersEligibility/" + this.selected_course_id
+                let url = "http://3.23.147.209:5000/getUsersEligibility/" + this.selected_course_id
                 const response = await fetch(url,{method: 'GET'});
 
                   if (!response.ok) {
@@ -270,7 +270,7 @@
       async function enrolLearner(user_id) {
         let course_id = app.selected_course_id
         let class_id = app.selected_class
-        let url = 'http://localhost:5000/enrolLearner'
+        let url = 'http://3.23.147.209:5000/enrolLearner'
         const response = await fetch(url, 
             {
               method: "PUT", 

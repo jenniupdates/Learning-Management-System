@@ -114,7 +114,7 @@ document.getElementById("createCourseBtn").addEventListener("click", function(ev
 });
 
 async function getAllCourses() {
-  let url = 'http://localhost:5000/HR/getAllCourses'
+  let url = 'http://3.23.147.209:5000/HR/getAllCourses'
   const response = await fetch(url,{method: 'GET'});
 
   if (!response.ok) {
@@ -203,7 +203,7 @@ function validateForm() {
   }
 
   async function createCourse() {
-    let url = 'http://localhost:5000/HR/createCourse'
+    let url = 'http://3.23.147.209:5000/HR/createCourse'
     const response = await fetch(url,
                     {
                         method: "POST",
