@@ -128,7 +128,7 @@ $class_id = $_GET['class_id'];
                                     <td>`+section_id+`</td>
                                     <td>`+description+`</td>
                                     <td>`+view_sections_btn+`</td>
-                                    <td><a href='Engineer_takeQuiz?quiz_id=`+quiz_id+`&user_id=`+this.user_id+`'><button type="button" class="btn btn-info">Take Quiz</button></a></td>
+                                    <td><a href='Engineer_takeQuiz.php?quiz_id=`+quiz_id+`&user_id=`+this.user_id+`'><button type="button" class="btn btn-info">Take Quiz</button></a></td>
                                     <td><h5><span class="badge `+status_btn[section_status]+`">`+section_status+`</span></h5></td>
                                 </tr>
                                 `
