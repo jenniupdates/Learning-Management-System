@@ -11,7 +11,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: rootpw
           MYSQL_DATABASE: g3t4
           MYSQL_USER: root
-          MYSQL_PASSWORD: ''
+          MYSQL_PASSWORD: rootpw
 
     steps:
       - checkout
@@ -37,7 +37,9 @@ jobs:
           name: Install MySQL CLI, Dependencies and Run Script
           command: |
             sudo apt-get install default-mysql-client
-            mysql -h 127.0.0.1 -u user - g3t4 < dbloadscript.sql
+            mysql -h 127.0.0.1 -u user -rootpw --execute="DROP DATABASE IF EXISTS `g3t4`"
+            mysql -h 127.0.0.1 -u user -rootpw --execute="CREATE DATABASE `g3t4`"
+            mysql -h 127.0.0.1 -u user -rootpw g3t4 < dbloadscript.sql
 
       - run:
           name: Testing
