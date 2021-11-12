@@ -13,7 +13,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Trainers</title>
+    <title>Edit Course</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -28,6 +28,25 @@
     </style>
   </head>
 <body>
+    <!-- NAV BAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">LMS Trainer</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="Trainer_Homepage2.html">Homepage</a>
+        </li>
+        <li class="nav-item">
+          <a class="dropdown-item" href="../">Change Demo Role</a>
+        </li>
+        </ul>
+    </div>
+    </nav>
+<!-- END OF NAV BAR -->
     <input type='hidden' id='course_id' value='<?=$course_id?>'>
     <input type='hidden' id='class_id' value='<?=$class_id?>'>
     <input type='hidden' id='trainer_name' value='<?=$trainer_name?>'>
