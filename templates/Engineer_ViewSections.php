@@ -38,7 +38,7 @@ $class_id = $_GET['class_id'];
                         <th>Section Description</th>
                         <th>Enter Section</th>
                         <th>Section Quiz</th>
-                        <th>Sextion Status</th>
+                        <th>Section Status</th>
                     </tr>
                 </thead>
                 <tbody id="section_list">
